@@ -96,7 +96,11 @@ public class Producto_model {
             cmd.setLong(3, pProducto.getMarca().getId());
             cmd.setLong(4, pProducto.getCategoria().getId());
             if(cmd.execute()){
-                exito = true;
+                ResultSet lector = cmd.getResultSet();
+                if(lector.next()){                    
+                    long idprod = lector.getLong(1); //Agregar el registro de inventario
+                    exito = true;
+                }
             }
         } catch(Exception ex){
             JOptionPane.showMessageDialog(
@@ -119,7 +123,8 @@ public class Producto_model {
         
         try{
             conn.conectar();
-            CallableStatement cmd = conn.getConexion().prepareCall("{ call actualizarproducto(?,?,?,?,?) }");
+            CallableStatement cmd = conn.getConexion().prepareCall("{ call actualizarproducto(?,?,?,?,?) }"); 
+            //modificar funcion para que retorne el exito y el idproducto para actualizar inventario
             cmd.setLong(1, pProducto.getId());
             cmd.setString(2, pProducto.getNombre());
             cmd.setString(3, pProducto.getDescripcion());
@@ -153,6 +158,7 @@ public class Producto_model {
         try{
             conn.conectar();
             CallableStatement cmd = conn.getConexion().prepareCall("{ call eliminarproducto(?) }");
+            //modificar para agregar la desactivacion de inventario
             cmd.setLong(1, pProducto.getId());
             if(cmd.execute()){
                 ResultSet lector = cmd.getResultSet();
