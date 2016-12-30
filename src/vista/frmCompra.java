@@ -66,7 +66,7 @@ public class frmCompra extends javax.swing.JDialog {
         cboUnidadMedida = new javax.swing.JComboBox<>();
         cboUnidadConversion = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jsCantidad = new javax.swing.JSpinner();
         jLabel14 = new javax.swing.JLabel();
         ftxtPrecio = new javax.swing.JFormattedTextField();
         btnAñadirDetalle = new javax.swing.JButton();
@@ -282,7 +282,7 @@ public class frmCompra extends javax.swing.JDialog {
 
         jLabel13.setText("Cantidad: ");
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        jsCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel14.setText("Precio de Compra: ");
 
@@ -326,7 +326,7 @@ public class frmCompra extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addGroup(jpProductoDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cboUnidadConversion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jSpinner1)))))
+                                    .addComponent(jsCantidad)))))
                     .addGroup(jpProductoDatosLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -369,7 +369,7 @@ public class frmCompra extends javax.swing.JDialog {
                         .addComponent(jLabel13))
                     .addGroup(jpProductoDatosLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jsCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpProductoDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -638,7 +638,6 @@ public class frmCompra extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JPanel jpAcciones;
     private javax.swing.JPanel jpDatosProveedor;
     private javax.swing.JPanel jpDetalle;
@@ -647,6 +646,7 @@ public class frmCompra extends javax.swing.JDialog {
     private javax.swing.JPanel jpProductoDatos;
     private javax.swing.JPanel jpProvAccion;
     private javax.swing.JPanel jpProveedor;
+    private javax.swing.JSpinner jsCantidad;
     private javax.swing.JTable jtDetalles;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCorreo;
