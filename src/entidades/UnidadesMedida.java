@@ -12,7 +12,7 @@ package entidades;
 public class UnidadesMedida {
     long _id;
     String _nombre;
-    UnidadesMedida _idconvertir;
+    UnidadesMedida _convertir;
     double _equivalencia;
     boolean estado;
 
@@ -32,12 +32,12 @@ public class UnidadesMedida {
         this._nombre = _nombre;
     }
 
-    public UnidadesMedida getIdconvertir() {
-        return _idconvertir;
+    public UnidadesMedida getConvertir() {
+        return _convertir;
     }
 
-    public void setIdconvertir(UnidadesMedida _idconvertir) {
-        this._idconvertir = _idconvertir;
+    public void setConvertir(UnidadesMedida _convertir) {
+        this._convertir = _convertir;
     }
 
     public double getEquivalencia() {
