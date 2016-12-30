@@ -155,16 +155,8 @@ public class UnidadesMedida_model {
         Conexion conn = new Conexion();
         try{
             conn.conectar();
-            CallableStatement cmd = conn.getConexion().prepareCall("{ call eliminarmedida(?,?,?,?) }");
+            CallableStatement cmd = conn.getConexion().prepareCall("{ call eliminarmedida(?) }");
             cmd.setLong(1, pUnidad.getId());
-            cmd.setString(2, pUnidad.getNombre());
-            if(pUnidad.getConvertir().getId() == 0){
-                cmd.setNull(3, java.sql.Types.BIGINT);
-                cmd.setNull(4, java.sql.Types.NUMERIC);
-            } else {
-                cmd.setLong(3, pUnidad.getConvertir().getId());
-                cmd.setDouble(4, pUnidad.getEquivalencia());
-            }
             if(cmd.execute()){
                 ResultSet lector = cmd.getResultSet();
                 if(lector.next()){
