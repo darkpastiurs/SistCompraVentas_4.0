@@ -83,4 +83,105 @@ public class UnidadesMedida_model {
         }
         return medida;
     }
+    
+    boolean Agregar(UnidadesMedida pUnidad){
+        boolean exito = false;
+        Conexion conn = new Conexion();
+        try{
+            conn.conectar();
+            CallableStatement cmd = conn.getConexion().prepareCall("{ call insertarmedida(?,?,?) }");
+            cmd.setString(1, pUnidad.getNombre());
+            if(pUnidad.getConvertir().getId() == 0){
+                cmd.setNull(2, java.sql.Types.BIGINT);
+                cmd.setNull(3, java.sql.Types.NUMERIC);
+            } else {
+                cmd.setLong(2, pUnidad.getConvertir().getId());
+                cmd.setDouble(3, pUnidad.getEquivalencia());
+            }
+            if(cmd.execute()){
+                exito = true;
+            }
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "No se han ingresado datos debido al error: \n" + ex.getMessage()
+                            + "\nFavor contacte al desarrollador",
+                    "Sistema de Compras y Ventas - Unidades de Medida",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } finally {
+            conn.desconectar();
+        }
+        return exito;
+    }
+    
+    boolean Actualizar(UnidadesMedida pUnidad){
+        boolean exito = false;
+        Conexion conn = new Conexion();
+        try{
+            conn.conectar();
+            CallableStatement cmd = conn.getConexion().prepareCall("{ call actualizarmedida(?,?,?,?) }");
+            cmd.setLong(1, pUnidad.getId());
+            cmd.setString(2, pUnidad.getNombre());
+            if(pUnidad.getConvertir().getId() == 0){
+                cmd.setNull(3, java.sql.Types.BIGINT);
+                cmd.setNull(4, java.sql.Types.NUMERIC);
+            } else {
+                cmd.setLong(3, pUnidad.getConvertir().getId());
+                cmd.setDouble(4, pUnidad.getEquivalencia());
+            }
+            if(cmd.execute()){
+                ResultSet lector = cmd.getResultSet();
+                if(lector.next()){
+                    exito = lector.getBoolean(1);
+                }
+            }
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "No se han editado datos debido al error: \n" + ex.getMessage()
+                            + "\nFavor contacte al desarrollador",
+                    "Sistema de Compras y Ventas - Unidades de Medida",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } finally {
+            conn.desconectar();
+        }
+        return exito;
+    }
+    
+    boolean Eliminar(UnidadesMedida pUnidad){
+        boolean exito = false;
+        Conexion conn = new Conexion();
+        try{
+            conn.conectar();
+            CallableStatement cmd = conn.getConexion().prepareCall("{ call eliminarmedida(?,?,?,?) }");
+            cmd.setLong(1, pUnidad.getId());
+            cmd.setString(2, pUnidad.getNombre());
+            if(pUnidad.getConvertir().getId() == 0){
+                cmd.setNull(3, java.sql.Types.BIGINT);
+                cmd.setNull(4, java.sql.Types.NUMERIC);
+            } else {
+                cmd.setLong(3, pUnidad.getConvertir().getId());
+                cmd.setDouble(4, pUnidad.getEquivalencia());
+            }
+            if(cmd.execute()){
+                ResultSet lector = cmd.getResultSet();
+                if(lector.next()){
+                    exito = lector.getBoolean(1);
+                }
+            }
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "No se han editado datos debido al error: \n" + ex.getMessage()
+                            + "\nFavor contacte al desarrollador",
+                    "Sistema de Compras y Ventas - Unidades de Medida",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } finally {
+            conn.desconectar();
+        }
+        return exito;
+    }
 }
