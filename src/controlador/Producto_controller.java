@@ -16,28 +16,28 @@ import modelo.Producto_model;
  */
 public class Producto_controller {
     
-    public List<Producto> Obtener(){
-        List<Producto> listaDatos = new Producto_model().obtenerProductos();
-        Collections.sort(listaDatos, (Producto p1, Producto p2) ->{
-            return p1.getNombre().compareTo(p2.getNombre());
-        });
-        return listaDatos;
-    }
+//    public List<Producto> Obtener(){
+//        List<Producto> listaDatos = new Producto_model().obtenerProductos();
+//        Collections.sort(listaDatos, (Producto p1, Producto p2) ->{
+//            return p1.getNombre().compareTo(p2.getNombre());
+//        });
+//        return listaDatos;
+//    }
     
     public Producto Obtener(Producto pProducto){
         return new Producto_model().obtenerProducto(pProducto);
     }
     
-    public boolean Registrar(Producto pProducto){
-        return new Producto_model().Agregar(pProducto);
-    }
-    
-    public boolean Editar(Producto pProducto){
-        return new Producto_model().Actualizar(pProducto);
-    }
-    
-    public boolean Borrar(Producto pProducto){
-        return new Producto_model().Eliminar(pProducto);
-    }
+//    public boolean Registrar(Producto pProducto){
+//        return new Producto_model().Agregar(pProducto);
+//    }
+//    
+//    public boolean Editar(Producto pProducto){
+//        return new Producto_model().Actualizar(pProducto);
+//    }
+//    
+//    public boolean Borrar(Producto pProducto){
+//        return new Producto_model().Eliminar(pProducto);
+//    }
     
 }

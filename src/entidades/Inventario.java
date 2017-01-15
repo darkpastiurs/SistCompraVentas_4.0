@@ -5,17 +5,18 @@
  */
 package entidades;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author darkpastiursSennin
  */
 public class Inventario {
     long _id;
-    double _stock;
-    double _precioCompra;
-    double _precioVenta;
+    BigDecimal _stock;
+    BigDecimal _precio;
     Producto _producto;
-    UnidadesMedida _unidad;
+    boolean _estado;
 
     public long getId() {
         return _id;
@@ -25,30 +26,22 @@ public class Inventario {
         this._id = _id;
     }
 
-    public double getStock() {
+    public BigDecimal getStock() {
         return _stock;
     }
 
-    public void setStock(double _stock) {
+    public void setStock(BigDecimal _stock) {
         this._stock = _stock;
     }
 
-    public double getPrecioCompra() {
-        return _precioCompra;
+    public BigDecimal getPrecio() {
+        return _precio;
     }
 
-    public void setPrecioCompra(double _precioCompra) {
-        this._precioCompra = _precioCompra;
+    public void setPrecio(BigDecimal _precio) {
+        this._precio = _precio;
     }
-
-    public double getPrecioVenta() {
-        return _precioVenta;
-    }
-
-    public void setPrecioVenta(double _precioVenta) {
-        this._precioVenta = _precioVenta;
-    }
-
+    
     public Producto getProducto() {
         return _producto;
     }
@@ -57,19 +50,24 @@ public class Inventario {
         this._producto = _producto;
     }
 
-    public UnidadesMedida getUnidad() {
-        return _unidad;
+    public boolean isEstado() {
+        return _estado;
     }
 
-    public void setUnidad(UnidadesMedida _unidad) {
-        this._unidad = _unidad;
+    public void setEstado(boolean _estado) {
+        this._estado = _estado;
     }
-
+    
     public Inventario() {
     }
 
     public Inventario(long _id) {
         this._id = _id;
+    }
+
+    @Override
+    public String toString() {
+        return this._producto._nombre;
     }
     
     
