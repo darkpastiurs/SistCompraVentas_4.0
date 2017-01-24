@@ -5,7 +5,12 @@
  */
 package vista;
 
+import entidades.Inventario;
+import entidades.Proveedor;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -16,11 +21,14 @@ public class frmCompra extends javax.swing.JDialog {
     /**
      * Creates new form frmCompra
      */
+    Inventario inventarioActual = new Inventario();
+    Proveedor proveedorActual = new Proveedor();
     public frmCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.btnNuevoProveedor.setMnemonic(KeyEvent.VK_F2);
         this.btnBuscarProv.setMnemonic(KeyEvent.VK_F3);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -167,7 +175,7 @@ public class frmCompra extends javax.swing.JDialog {
                         .addComponent(jLabel16)
                         .addGap(18, 18, 18)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpDatosProveedorLayout.setVerticalGroup(
             jpDatosProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +256,7 @@ public class frmCompra extends javax.swing.JDialog {
             .addGroup(jpProveedorLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jpDatosProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jpProvAccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -335,7 +343,7 @@ public class frmCompra extends javax.swing.JDialog {
                         .addComponent(btnAñadirDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnQuitarDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpProductoDatosLayout.setVerticalGroup(
             jpProductoDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,7 +389,13 @@ public class frmCompra extends javax.swing.JDialog {
 
         btnNuevoProducto.setText("<html>Nuevo Producto<br><center>F4</center></html>");
 
-        btnBuscarProducto.setText("<html>Buscar Producto<br><center>F5</center></html>");
+        btnBuscarProducto.setText("<html>BuscarProducto<br><center>F5</center></html>");
+        btnBuscarProducto.setPreferredSize(new java.awt.Dimension(109, 37));
+        btnBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpProdAccionesLayout = new javax.swing.GroupLayout(jpProdAcciones);
         jpProdAcciones.setLayout(jpProdAccionesLayout);
@@ -411,9 +425,9 @@ public class frmCompra extends javax.swing.JDialog {
             .addGroup(jpProductoLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jpProductoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpProdAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpProductoLayout.setVerticalGroup(
             jpProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,7 +483,7 @@ public class frmCompra extends javax.swing.JDialog {
             jpDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpDetalleLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -502,7 +516,7 @@ public class frmCompra extends javax.swing.JDialog {
                 .addComponent(btnGuardar)
                 .addGap(113, 113, 113)
                 .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(btnHistorial)
                 .addContainerGap())
         );
@@ -525,10 +539,13 @@ public class frmCompra extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpDetalle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE))
+                    .addComponent(jpAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jpProveedor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpProducto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -550,17 +567,50 @@ public class frmCompra extends javax.swing.JDialog {
 
     private void btnNuevoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProveedorActionPerformed
         // TODO add your handling code here:
+        JSONArray ja = new JSONArray();
+        for (int i = 0; i < 10; i++) {
+            JSONObject jo = new JSONObject();
+            jo.put("Inventario", i);
+            ja.put(jo);
+        }
+        JOptionPane.showMessageDialog(this, ja.toString());
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
     private void btnBuscarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvActionPerformed
         // TODO add your handling code here:
-        
+        frmBuscarProveedor frm = new frmBuscarProveedor(this, true);
+        frm.setVisible(true);
+        if(frm.isVisible() == false){
+            if(frm.proveedorActual.getId() != 0){
+                proveedorActual = frm.proveedorActual;
+                lblNombreProv.setText(proveedorActual.getNombre());
+                lblDireccion.setText(proveedorActual.getDireccion());
+                lblTelefono.setText(proveedorActual.getTelefono());
+                lblCorreo.setText(proveedorActual.getEmail().equals("") ? "No posee" : proveedorActual.getEmail());
+                lblNIT.setText(proveedorActual.getNIT());
+                lblNRC.setText(proveedorActual.getNRC(true));
+            }
+        }
     }//GEN-LAST:event_btnBuscarProvActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
         
     }//GEN-LAST:event_formKeyPressed
+
+    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
+        // TODO add your handling code here:
+        frmBuscarProducto frm = new frmBuscarProducto(this, true);
+        frm.setVisible(true);
+        if(frm.isVisible() == false){
+            if(frm.inventarioActual.getId() != 0){
+                inventarioActual = frm.inventarioActual;
+                lblProducto.setText(inventarioActual.getProducto().getNombre());
+                lblMarca.setText(inventarioActual.getProducto().getMarca().getNombre());
+                lblCategoria.setText(inventarioActual.getProducto().getCategoria().getNombre());
+            }
+        }
+    }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
     /**
      * @param args the command line arguments

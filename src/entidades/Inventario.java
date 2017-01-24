@@ -31,7 +31,7 @@ public class Inventario {
     }
 
     public void setStock(BigDecimal _stock) {
-        this._stock = _stock;
+        this._stock = _stock.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getPrecio() {
@@ -39,7 +39,7 @@ public class Inventario {
     }
 
     public void setPrecio(BigDecimal _precio) {
-        this._precio = _precio;
+        this._precio = _precio.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
     
     public Producto getProducto() {

@@ -481,14 +481,14 @@ public class frmProductos extends javax.swing.JDialog {
         frmBuscarProducto frmBuscar = new frmBuscarProducto(this, true);
         frmBuscar.setVisible(true);
         if(frmBuscar.isVisible() == false){
-            if(frmBuscar.productoActual != null){
-                idInventario = frmBuscar.productoActual.getId();
-                txtNombre.setText(frmBuscar.productoActual.getNombre());
-                txtMarca.setText(frmBuscar.productoActual.getMarca().getNombre());
-                marcaActual = frmBuscar.productoActual.getMarca();
-                txtCategoria.setText(frmBuscar.productoActual.getCategoria().getNombre());
-                categoriaActual = frmBuscar.productoActual.getCategoria();
-                txtaDescripcion.setText(frmBuscar.productoActual.getDescripcion());
+            if(frmBuscar.inventarioActual != null){
+                idInventario = frmBuscar.inventarioActual.getId();
+                txtNombre.setText(frmBuscar.inventarioActual.getProducto().getNombre());
+                txtMarca.setText(frmBuscar.inventarioActual.getProducto().getMarca().getNombre());
+                marcaActual = frmBuscar.inventarioActual.getProducto().getMarca();
+                txtCategoria.setText(frmBuscar.inventarioActual.getProducto().getCategoria().getNombre());
+                categoriaActual = frmBuscar.inventarioActual.getProducto().getCategoria();
+                txtaDescripcion.setText(frmBuscar.inventarioActual.getProducto().getDescripcion());
                 validar.estadosBotones(3, arrayBotones);
                 frmBuscar.dispose();
             }

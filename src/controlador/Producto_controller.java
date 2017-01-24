@@ -6,8 +6,6 @@
 package controlador;
 
 import entidades.Producto;
-import java.util.Collections;
-import java.util.List;
 import modelo.Producto_model;
 
 /**

@@ -5,8 +5,8 @@
  */
 package vista;
 
-import controlador.Producto_controller;
-import entidades.Producto;
+import controlador.Inventario_controller;
+import entidades.Inventario;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,16 +21,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public final class frmBuscarProducto extends javax.swing.JDialog {
 
-    Producto_controller controlador;
-    List<Producto> filtrado;
-    Producto productoActual;
+    Inventario_controller controlador;
+    List<Inventario> filtrado;
+    public Inventario inventarioActual;
     
     public static void reiniciarJTable(JTable jTable){
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         while(modelo.getRowCount()>0)modelo.removeRow(0);       
     }
     
-    void llenarJTable(List<Producto> listaDatos){
+    void llenarJTable(List<Inventario> listaDatos){
         reiniciarJTable(jtProducto);
         String[] columnas = {"Nombre", "Marca", "Categoria", "Descripcion"};
         DefaultTableModel modelo = new DefaultTableModelImpl();
@@ -39,9 +39,9 @@ public final class frmBuscarProducto extends javax.swing.JDialog {
             if (dato.isEstado()) {
                 Object[] nuevaFila = {
                     dato,
-                    dato.getMarca(),
-                    dato.getCategoria(),
-                    dato.getDescripcion()
+                    dato.getProducto().getMarca(),
+                    dato.getProducto().getCategoria(),
+                    dato.getProducto().getDescripcion()
                 };
                 modelo.addRow(nuevaFila);
             }
@@ -50,19 +50,19 @@ public final class frmBuscarProducto extends javax.swing.JDialog {
     }
     
     void buscarTXT(){
-        List<Producto> encontrado = new ArrayList<>();
+        List<Inventario> encontrado = new ArrayList<>();
         switch(cboFiltro.getSelectedItem().toString()){
             case "Nombre":
                 encontrado = filtrado.stream().filter(
-                        dato -> dato.getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
+                        dato -> dato.getProducto().getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
                 break;
             case "Marca":
                 encontrado = filtrado.stream().filter(
-                        dato -> dato.getMarca().getNombre().toUpperCase().contains(txtBusqueda.getText())).collect(Collectors.toList());
+                        dato -> dato.getProducto().getMarca().getNombre().toUpperCase().contains(txtBusqueda.getText())).collect(Collectors.toList());
                 break;
             case "Categoria":
                 encontrado = filtrado.stream().filter(
-                        dato -> dato.getCategoria().getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
+                        dato -> dato.getProducto().getCategoria().getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
                 break;
             default:
                 break;
@@ -91,7 +91,7 @@ public final class frmBuscarProducto extends javax.swing.JDialog {
     
     int buscarProductoIndex(String filtro){
         for(int i = 0; i < filtrado.size(); i++){
-            if(filtrado.get(i).getNombre().equals(filtro)){
+            if(filtrado.get(i).getProducto().getNombre().equals(filtro)){
                 return i;
             }
         }
@@ -107,7 +107,7 @@ public final class frmBuscarProducto extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        controlador = new Producto_controller();
+        controlador = new Inventario_controller();
         filtrado = new ArrayList<>();
         filtrado = controlador.Obtener();
         llenarJTable(filtrado);
@@ -118,7 +118,7 @@ public final class frmBuscarProducto extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        controlador = new Producto_controller();
+        controlador = new Inventario_controller();
         filtrado = new ArrayList<>();
         filtrado = controlador.Obtener();
         llenarJTable(filtrado);
@@ -242,7 +242,7 @@ public final class frmBuscarProducto extends javax.swing.JDialog {
             String filtro = jtProducto.getValueAt(fila, 0).toString();
             int obtenerFila = buscarProductoIndex(filtro);
             if(obtenerFila > -1){
-                productoActual = filtrado.get(obtenerFila);
+                inventarioActual = filtrado.get(obtenerFila);
                 this.setVisible(false);
             }
         }
