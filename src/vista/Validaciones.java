@@ -131,7 +131,7 @@ public class Validaciones {
                     botones[3].setEnabled(false); //btnEliminar
                     botones[4].setEnabled(true); //btnBuscar
                     botones[5].setEnabled(false); //btnCancelar
-                    botones[6].setEnabled(true); //btnSalir
+//                    botones[6].setEnabled(true); //btnSalir
                     break;
                 case 2: //Estado para Nuevo o Editar registro
                     botones[0].setEnabled(false); //btnNuevo
@@ -140,7 +140,7 @@ public class Validaciones {
                     botones[3].setEnabled(false); //btnEliminar
                     botones[4].setEnabled(false); //btnBuscar
                     botones[5].setEnabled(true); //btnCancelar
-                    botones[6].setEnabled(false); //btnSalir
+//                    botones[6].setEnabled(false); //btnSalir
                     break;
                 case 3: //Estado para cuando se le de al boton de Buscar
                     botones[0].setEnabled(true); //btnNuevo
@@ -149,7 +149,7 @@ public class Validaciones {
                     botones[3].setEnabled(true); //btnEliminar
                     botones[4].setEnabled(true); //btnBuscar
                     botones[5].setEnabled(false); //btnCancelar
-                    botones[6].setEnabled(true); //btnSalir
+//                    botones[6].setEnabled(true); //btnSalir
                     break;   
                 default:
                     System.out.println("Error opcion no existe");
