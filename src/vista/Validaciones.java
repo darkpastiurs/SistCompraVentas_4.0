@@ -12,6 +12,7 @@ import entidades.Usuario;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -27,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
@@ -120,6 +122,14 @@ public class Validaciones {
         }
     }
     
+    public void preciosFormato(JFormattedTextField txt, Component ventana){
+        try{
+            txt = new JFormattedTextField(new DecimalFormat("###,##"));         
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(ventana, "Error: " + ex.getMessage(), "Sistema de Compra y Ventas - Validaciones", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
        
     public void estadosBotones(int codigo, JButton[] botones){
         if(botones.length > 0){
@@ -170,7 +180,8 @@ public class Validaciones {
             } else if(componente instanceof JViewport){
                 habilitarComponentes(((JViewport) componente).getComponents());
             } else if((componente instanceof JTextField) || (componente instanceof JFormattedTextField)
-                     || (componente instanceof JCheckBox) || (componente instanceof JComboBox) || (componente instanceof JTextArea)){
+                     || (componente instanceof JCheckBox) || (componente instanceof JComboBox) 
+                     || (componente instanceof JTextArea) || (componente instanceof JSpinner)){
                 componente.setEnabled(true);
             }
         }
@@ -193,7 +204,8 @@ public class Validaciones {
             } else if(componente instanceof JViewport){
                 deshabilitarComponentes(((JViewport) componente).getComponents());
             } else if((componente instanceof JTextField) || (componente instanceof JFormattedTextField)
-                     || (componente instanceof JCheckBox) || (componente instanceof JComboBox) || (componente instanceof JTextArea)){
+                     || (componente instanceof JCheckBox) || (componente instanceof JComboBox) 
+                     || (componente instanceof JTextArea) || (componente instanceof JSpinner)){
                 componente.setEnabled(false);
             }
         }
@@ -270,6 +282,7 @@ public class Validaciones {
             }
         });
     }
+    
     final void validarSoloNumeros(JTextField a){
         a.addKeyListener(new KeyAdapter() {
             @Override

@@ -5,10 +5,19 @@
  */
 package vista;
 
+import controlador.Compra_controller;
+import entidades.Compra;
+import entidades.DetalleCompra;
 import entidades.Inventario;
 import entidades.Proveedor;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,21 +25,129 @@ import org.json.JSONObject;
  *
  * @author darkpastiursSennin
  */
-public class frmCompra extends javax.swing.JDialog {
+public final class frmCompra extends javax.swing.JDialog {
 
     /**
      * Creates new form frmCompra
      */
     Inventario inventarioActual = new Inventario();
     Proveedor proveedorActual = new Proveedor();
+    Validaciones validar = new Validaciones();
     public frmCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.btnNuevoProveedor.setMnemonic(KeyEvent.VK_F2);
         this.btnBuscarProv.setMnemonic(KeyEvent.VK_F3);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);                
+        String[] columnas = {"Producto", "Precio Unitario", "Cantidad", "Subtotal"};
+        DefaultTableModel modelo = new DefaultTableModelImpl();
+        modelo.setColumnIdentifiers(columnas);
+        jtDetalles.setModel(modelo);
+        finalizarIngreso();
     }
-
+    
+    public static void reiniciarJTable(JTable jTable){
+        DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
+        while(modelo.getRowCount()>0)modelo.removeRow(0);       
+    }
+    
+    public void iniciarIngreso(){
+        validar.habilitarComponentes(this.getComponents());
+        btnAñadirDetalle.setEnabled(true);
+        btnQuitarDetalle.setEnabled(true);
+        btnNuevoProveedor.setEnabled(true);
+        btnBuscarProv.setEnabled(true);
+        btnNuevoProducto.setEnabled(true);
+        btnBuscarProducto.setEnabled(true);
+        btnCancelar.setEnabled(true);
+        btnNuevo.setEnabled(false);        
+        btnGuardar.setEnabled(true);
+        jtDetalles.setEnabled(true);
+        inventarioActual = new Inventario();
+        proveedorActual = new Proveedor();        
+        reiniciarJTable(jtDetalles);
+    }
+    
+    public void finalizarIngreso(){
+        validar.deshabilitarComponentes(this.getComponents());
+        btnAñadirDetalle.setEnabled(false);
+        btnQuitarDetalle.setEnabled(false);
+        btnNuevoProveedor.setEnabled(false);
+        btnBuscarProv.setEnabled(false);
+        btnNuevoProducto.setEnabled(false);
+        btnBuscarProducto.setEnabled(false);
+        btnCancelar.setEnabled(false);
+        btnGuardar.setEnabled(false);
+        btnNuevo.setEnabled(true);
+        jtDetalles.setEnabled(false);
+        inventarioActual = new Inventario();
+        proveedorActual = new Proveedor();
+        reiniciarJTable(jtDetalles);        
+    }
+    
+    private void addCart(){
+        DefaultTableModel modelo = (DefaultTableModel) jtDetalles.getModel();
+        if(inventarioActual.getId() != 0){
+            boolean encontrado = false;
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                Inventario comparador = (Inventario) (modelo.getValueAt(i, 0));
+                System.out.println(comparador + " = " + inventarioActual);
+                if(comparador.getId() == inventarioActual.getId()){
+                    encontrado = true;
+                    break;
+                }
+            }
+            if(encontrado){
+                JOptionPane.showMessageDialog(this, "Ya se agrego este producto","Sistemas de Compras y Ventas - Compras", JOptionPane.WARNING_MESSAGE);
+            } else {
+                double cantidad = Double.parseDouble(jsCantidad.getValue().toString());
+                double subtotal = Double.parseDouble(ftxtPrecio.getText()) * cantidad;
+                Object[] nuevaFila = {
+                        inventarioActual,
+                        ftxtPrecio.getText(),
+                        cantidad,
+                        new BigDecimal(subtotal).setScale(2, RoundingMode.HALF_UP)
+                }; 
+                modelo.addRow(nuevaFila);
+                jtDetalles.setModel(modelo);
+                inventarioActual = new Inventario();
+                lblProducto.setText("<Producto>");
+                lblMarca.setText("<Marca>");
+                lblCategoria.setText("<Categoria>");
+                jsCantidad.setValue(1);
+                ftxtPrecio.setText("");
+                calcularTotal();
+            }            
+        }
+    }
+    
+    private void quitCart(){
+        int fila = jtDetalles.getSelectedRow();
+        if(fila > -1){
+            DefaultTableModel modelo = (DefaultTableModel) jtDetalles.getModel();
+            modelo.removeRow(fila);
+            calcularTotal();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Seleccione producto a quitar",
+                    "Sistemas de Compras y Ventas - Compras", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void calcularTotal(){
+        double subtotal = 0;
+        double iva = 0;
+        double total = 0;
+        for (int i = 0; i < jtDetalles.getRowCount(); i++) {
+            subtotal += Double.parseDouble(jtDetalles.getValueAt(i, 3).toString());
+        }
+        txtSubtotal.setText(new BigDecimal(subtotal).setScale(2, RoundingMode.HALF_UP).toString());
+        iva = subtotal * 0.13;
+        txtIVA.setText(new BigDecimal(iva).setScale(2, RoundingMode.HALF_UP).toString());
+        total = subtotal + iva;
+        txtTotal.setText(new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).toString());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -297,8 +414,18 @@ public class frmCompra extends javax.swing.JDialog {
         ftxtPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
         btnAñadirDetalle.setText("Añadir");
+        btnAñadirDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAñadirDetalleActionPerformed(evt);
+            }
+        });
 
         btnQuitarDetalle.setText("Quitar");
+        btnQuitarDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarDetalleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpProductoDatosLayout = new javax.swing.GroupLayout(jpProductoDatos);
         jpProductoDatos.setLayout(jpProductoDatosLayout);
@@ -498,10 +625,25 @@ public class frmCompra extends javax.swing.JDialog {
         jpAcciones.setPreferredSize(new java.awt.Dimension(0, 50));
 
         btnNuevo.setText("Nueva Compra");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Registrar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnHistorial.setText("Historial de Compras");
 
@@ -510,9 +652,9 @@ public class frmCompra extends javax.swing.JDialog {
         jpAccionesLayout.setHorizontalGroup(
             jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAccionesLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(35, 35, 35)
                 .addComponent(btnNuevo)
-                .addGap(113, 113, 113)
+                .addGap(88, 88, 88)
                 .addComponent(btnGuardar)
                 .addGap(113, 113, 113)
                 .addComponent(btnCancelar)
@@ -567,13 +709,6 @@ public class frmCompra extends javax.swing.JDialog {
 
     private void btnNuevoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProveedorActionPerformed
         // TODO add your handling code here:
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < 10; i++) {
-            JSONObject jo = new JSONObject();
-            jo.put("Inventario", i);
-            ja.put(jo);
-        }
-        JOptionPane.showMessageDialog(this, ja.toString());
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
     private void btnBuscarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvActionPerformed
@@ -603,7 +738,7 @@ public class frmCompra extends javax.swing.JDialog {
         frmBuscarProducto frm = new frmBuscarProducto(this, true);
         frm.setVisible(true);
         if(frm.isVisible() == false){
-            if(frm.inventarioActual.getId() != 0){
+            if(!frm.inventarioActual.getProducto().getNombre().equals("")){
                 inventarioActual = frm.inventarioActual;
                 lblProducto.setText(inventarioActual.getProducto().getNombre());
                 lblMarca.setText(inventarioActual.getProducto().getMarca().getNombre());
@@ -611,6 +746,75 @@ public class frmCompra extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
+
+    private void btnAñadirDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirDetalleActionPerformed
+        // TODO add your handling code here:
+        addCart();
+    }//GEN-LAST:event_btnAñadirDetalleActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        Compra nuevaCompra = new Compra();
+        if(proveedorActual.getNombre().equals("")){
+            JOptionPane.showMessageDialog(this, 
+                    "Ingresa un proveedor primero",
+                    "Sistemas de Compras y Ventas - Compras", 
+                    JOptionPane.ERROR_MESSAGE);
+        } else {            
+            nuevaCompra.setProveedor(proveedorActual);
+            if(txtNFactura.getText().equals("")){
+                JOptionPane.showMessageDialog(this, 
+                    "Ingresa el numero de la factura",
+                    "Sistemas de Compras y Ventas - Compras", 
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                nuevaCompra.setnFactura(txtNFactura.getText()); 
+                if(jtDetalles.getRowCount() <= 0){
+                    JOptionPane.showMessageDialog(this, 
+                    "Ingresa productos a comprar",
+                    "Sistemas de Compras y Ventas - Compras", 
+                    JOptionPane.ERROR_MESSAGE);
+                } else{
+                    List<DetalleCompra> detalles = new ArrayList<>();
+                    for (int i = 0; i < jtDetalles.getRowCount(); i++) {
+                        DetalleCompra detalle = new DetalleCompra();
+                        Inventario extraer = (Inventario) jtDetalles.getValueAt(i, 0);
+                        detalle.setInventario(extraer);
+                        detalle.setPrecioUnitario(new BigDecimal(jtDetalles.getValueAt(i, 1).toString()));
+                        detalle.setCantidad(new BigDecimal(jtDetalles.getValueAt(i, 2).toString()));
+                        detalle.setPrecioTotal(new BigDecimal(jtDetalles.getValueAt(i, 3).toString()));
+                        detalles.add(detalle);
+                    }
+                    nuevaCompra.setDetalleCompra(detalles);
+                    nuevaCompra.setSubtotal(new BigDecimal(txtSubtotal.getText()));
+                    nuevaCompra.setIva(new BigDecimal(txtIVA.getText()));
+                    nuevaCompra.setTotal(new BigDecimal(txtTotal.getText()));
+                    nuevaCompra.setEmpleado(frmMenuPrincipal.usuarioActual.getEmpleado());
+                    boolean Registrar = new Compra_controller().Registrar(nuevaCompra);
+                    if(Registrar){
+                        JOptionPane.showMessageDialog(this,"La compra ha sido ingresada correctamente","Sistema de Compras y Ventas - Compra",JOptionPane.ERROR_MESSAGE);
+                        finalizarIngreso();
+                    }
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        iniciarIngreso();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        finalizarIngreso();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnQuitarDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarDetalleActionPerformed
+        // TODO add your handling code here:
+        quitCart();
+    }//GEN-LAST:event_btnQuitarDetalleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -652,6 +856,17 @@ public class frmCompra extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+    }
+    
+    private static class DefaultTableModelImpl extends DefaultTableModel {
+
+        public DefaultTableModelImpl() {
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int vColIndex) {
+            return false;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

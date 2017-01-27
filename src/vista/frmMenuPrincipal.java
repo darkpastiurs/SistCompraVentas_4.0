@@ -228,6 +228,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         jmInventario.setText("Inventario");
 
         jmiCompra.setText("Registrar Compras");
+        jmiCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiCompraActionPerformed(evt);
+            }
+        });
         jmInventario.add(jmiCompra);
 
         jmiHistorialCompras.setText("Historial de Compras");
@@ -444,6 +449,12 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
             proveedorFrm.dispose();
         }
     }//GEN-LAST:event_jmiProveedoresActionPerformed
+
+    private void jmiCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCompraActionPerformed
+        // TODO add your handling code here:
+        frmCompra compraFrm = new frmCompra(this, true);
+        compraFrm.setVisible(true);
+    }//GEN-LAST:event_jmiCompraActionPerformed
 
     /**
      * @param args the command line arguments
