@@ -21,6 +21,8 @@ public class Compra {
     private BigDecimal _total;
     private Proveedor _proveedor;
     private List<DetalleCompra> _detalleCompra;
+    private String _nFactura;
+    private Empleado _empleado;
 
     public long getId() {
         return _id;
@@ -78,6 +80,22 @@ public class Compra {
         this._detalleCompra = _detalleCompra;
     }
 
+    public String getnFactura() {
+        return _nFactura;
+    }
+
+    public void setnFactura(String _nFactura) {
+        this._nFactura = _nFactura;
+    }
+
+    public Empleado getEmpleado() {
+        return _empleado;
+    }
+
+    public void setEmpleado(Empleado _empleado) {
+        this._empleado = _empleado;
+    }
+    
     public Compra() {
     }
 
