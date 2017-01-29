@@ -515,6 +515,11 @@ public final class frmCompra extends javax.swing.JDialog {
         );
 
         btnNuevoProducto.setText("<html>Nuevo Producto<br><center>F4</center></html>");
+        btnNuevoProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoProductoActionPerformed(evt);
+            }
+        });
 
         btnBuscarProducto.setText("<html>BuscarProducto<br><center>F5</center></html>");
         btnBuscarProducto.setPreferredSize(new java.awt.Dimension(109, 37));
@@ -709,6 +714,11 @@ public final class frmCompra extends javax.swing.JDialog {
 
     private void btnNuevoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProveedorActionPerformed
         // TODO add your handling code here:
+        frmProveedores frm = new frmProveedores(this, true);
+        frm.setVisible(true);
+        if(frm.isVisible() == false){
+            frm.dispose();
+        }
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
     private void btnBuscarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvActionPerformed
@@ -724,6 +734,7 @@ public final class frmCompra extends javax.swing.JDialog {
                 lblCorreo.setText(proveedorActual.getEmail().equals("") ? "No posee" : proveedorActual.getEmail());
                 lblNIT.setText(proveedorActual.getNIT());
                 lblNRC.setText(proveedorActual.getNRC(true));
+                frm.dispose();
             }
         }
     }//GEN-LAST:event_btnBuscarProvActionPerformed
@@ -743,6 +754,7 @@ public final class frmCompra extends javax.swing.JDialog {
                 lblProducto.setText(inventarioActual.getProducto().getNombre());
                 lblMarca.setText(inventarioActual.getProducto().getMarca().getNombre());
                 lblCategoria.setText(inventarioActual.getProducto().getCategoria().getNombre());
+                frm.dispose();
             }
         }
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
@@ -815,6 +827,15 @@ public final class frmCompra extends javax.swing.JDialog {
         // TODO add your handling code here:
         quitCart();
     }//GEN-LAST:event_btnQuitarDetalleActionPerformed
+
+    private void btnNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProductoActionPerformed
+        // TODO add your handling code here:
+        frmProductos frm = new frmProductos(this, true);
+        frm.setVisible(true);
+        if(frm.isVisible() == false){
+            frm.dispose();
+        }
+    }//GEN-LAST:event_btnNuevoProductoActionPerformed
 
     /**
      * @param args the command line arguments

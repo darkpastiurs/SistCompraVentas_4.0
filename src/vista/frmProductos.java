@@ -68,6 +68,14 @@ public class frmProductos extends javax.swing.JDialog {
         validar.preciosFormato(jftxtPrecio, this);
         finalizarIngreso();
     }
+    public frmProductos(javax.swing.JDialog parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar, btnSalir};
+        validar.preciosFormato(jftxtPrecio, this);
+        finalizarIngreso();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
