@@ -7,9 +7,11 @@ package vista;
 
 import controlador.Cliente_controller;
 import entidades.Cliente;
+import iconos.JButtonEfec;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -22,7 +24,7 @@ public class frmClientes extends javax.swing.JDialog {
     boolean editar = false;
     Cliente_controller controlador;
     private long idCliente = 0;
-    
+  
     public void iniciarIngreso(){    
         validar.estadosBotones(2, arrayBotones);
         validar.habilitarComponentes(this.getComponents());
@@ -44,8 +46,15 @@ public class frmClientes extends javax.swing.JDialog {
      */
     public frmClientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
+        initComponents();     
+
+//            JButtonEfec btn1=new JButtonEfec("C:\\Users\\Gerard\\Documents\\NetBeansProjects\\SistCompraVentas_4.0(working)\\src\\iconos\\All-mail-48.png","Enviar Correo","Ctrl+E");
+//            jpContacto.add(btn1);
+//            frmClientes.add(jpContacto);
+//            jpAcciones.setVisible(true);
+
         this.arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar};
+        
         controlador = new Cliente_controller();
         validar.duiFormato(ftxtDUI, this);
         validar.nitFormato(ftxtNIT, this);
@@ -267,7 +276,7 @@ public class frmClientes extends javax.swing.JDialog {
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/nuevo.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
-        btnNuevo.setContentAreaFilled(false);
+        btnNuevo.setDisabledIcon(null);
         btnNuevo.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnNuevo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -312,6 +321,7 @@ public class frmClientes extends javax.swing.JDialog {
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete_256.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnEliminar.setContentAreaFilled(false);
         btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -325,6 +335,7 @@ public class frmClientes extends javax.swing.JDialog {
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/icono_buscar.png"))); // NOI18N
         btnBuscar.setText("Buscar");
+        btnBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnBuscar.setContentAreaFilled(false);
         btnBuscar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -338,7 +349,10 @@ public class frmClientes extends javax.swing.JDialog {
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/deshacer.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
+        btnCancelar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnCancelar.setBorderPainted(false);
         btnCancelar.setContentAreaFilled(false);
+        btnCancelar.setHideActionText(true);
         btnCancelar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCancelar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
