@@ -5,11 +5,8 @@
  */
 package modelo;
 
-import entidades.Categoria;
 import entidades.Inventario;
-import entidades.Marca;
 import entidades.Producto;
-import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -60,6 +57,7 @@ public class Inventario_model {
         try{
             conn.conectar();
             CallableStatement cmd = conn.getConexion().prepareCall("{ call obtenerinventario(?) }");
+            cmd.setLong(1, pInventario.getId());
             if(cmd.execute()){
                 ResultSet lector = cmd.getResultSet();
                 if(lector.next()){

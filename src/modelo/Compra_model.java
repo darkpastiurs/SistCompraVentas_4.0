@@ -6,8 +6,14 @@
 package modelo;
 
 import entidades.Compra;
-import java.math.BigDecimal;
+import entidades.DetalleCompra;
+import entidades.Empleado;
+import entidades.Inventario;
+import entidades.Proveedor;
 import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,6 +24,42 @@ import org.postgresql.util.PGobject;
  * @author darkpastiursSennin
  */
 public class Compra_model {
+    
+    public List<Compra> obtenerCompras(){
+        List<Compra> compras = new ArrayList<>();
+        Conexion conn = new Conexion();
+        try{
+            conn.conectar();
+            CallableStatement cmd = conn.getConexion().prepareCall("{ call obtenercompras() }");
+            if(cmd.execute()){
+                ResultSet lector = cmd.getResultSet();
+                while(lector.next()){
+                    Compra compra = new Compra();
+                    compra.setId(lector.getLong(1));
+                    compra.setFecha(lector.getTimestamp(2));
+                    compra.setSubtotal(lector.getBigDecimal(3));
+                    compra.setIva(lector.getBigDecimal(4));
+                    compra.setTotal(lector.getBigDecimal(5));
+                    compra.setProveedor(new Proveedor_model().obtenerProveedor(new Proveedor(lector.getLong(6))));
+                    compra.setnFactura(lector.getString(7));
+                    compra.setEmpleado(new Empleado_model().obtenerEmpleado(new Empleado(lector.getLong(8))));
+                    compra.setDetalleCompra(new DetalleCompra_model().Obtener(compra));
+                    compras.add(compra);
+                }
+            }
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "No se han registrado los datos debido al error: \n" + ex.getMessage()
+                            + "\nFavor contacte al desarrollador",
+                    "Sistema de Compras y Ventas - Compra",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } finally {
+            conn.desconectar();
+        }
+        return compras;
+    }
     
     public boolean Agregar(Compra pCompra){
         boolean exito = false;

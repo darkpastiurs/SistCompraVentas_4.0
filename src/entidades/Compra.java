@@ -15,7 +15,7 @@ import java.util.List;
 public class Compra {
     
     private long _id;
-    private java.sql.Date _fecha;
+    private java.sql.Timestamp _fecha;
     private BigDecimal _subtotal;
     private BigDecimal _iva;
     private BigDecimal _total;
@@ -32,12 +32,12 @@ public class Compra {
         this._id = _id;
     }
 
-    public java.sql.Date getFecha() {
+    public java.sql.Timestamp getFecha() {
         return _fecha;
     }
 
-    public void setFecha(java.util.Date _fecha) {
-        this._fecha = new java.sql.Date(_fecha.getTime());
+    public void setFecha(java.sql.Timestamp _fecha) {
+        this._fecha = _fecha;
     }
 
     public BigDecimal getSubtotal() {

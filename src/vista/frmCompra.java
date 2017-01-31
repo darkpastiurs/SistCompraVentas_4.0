@@ -651,6 +651,11 @@ public final class frmCompra extends javax.swing.JDialog {
         });
 
         btnHistorial.setText("Historial de Compras");
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistorialActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpAccionesLayout = new javax.swing.GroupLayout(jpAcciones);
         jpAcciones.setLayout(jpAccionesLayout);
@@ -836,6 +841,15 @@ public final class frmCompra extends javax.swing.JDialog {
             frm.dispose();
         }
     }//GEN-LAST:event_btnNuevoProductoActionPerformed
+
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+        // TODO add your handling code here:
+        frmHistorialCompras frm = new frmHistorialCompras(this, true);
+        frm.setVisible(true);
+        if(!frm.isVisible()){
+            frm.dispose();
+        }
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
     /**
      * @param args the command line arguments

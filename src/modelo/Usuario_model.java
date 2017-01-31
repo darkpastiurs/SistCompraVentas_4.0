@@ -64,7 +64,7 @@ public class Usuario_model {
                     Usuario usuario = new Usuario();
                     usuario.setNickname(lector.getString(1));
                     usuario.setEstado(lector.getBoolean(2));
-                    usuario.setEmpleado(new Empleado_model().obtenerEmpleado(new Empleado(lector.getInt(3))));
+                    usuario.setEmpleado(new Empleado_model().obtenerEmpleado(new Empleado(lector.getLong(3))));
                     usuario.setNivel(new Nivel_model().obtenerNivel(new Nivel(lector.getLong(4)), true));
                     usuarios.add(usuario);
                 }

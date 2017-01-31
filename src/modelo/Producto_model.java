@@ -10,8 +10,6 @@ import entidades.Marca;
 import entidades.Producto;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -43,7 +41,7 @@ public class Producto_model {
                     null, 
                     "No se han cargado datos debido al error: \n" + ex.getMessage()
                             + "\nFavor contacte al desarrollador",
-                    "Sistema de Compras y Ventas - Producto",
+                    "Sistema de Compras y Ventas - Producto ",
                     JOptionPane.ERROR_MESSAGE
             );
         } finally {
