@@ -147,6 +147,8 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
             .addComponent(lblFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jmbMenu.setBackground(new java.awt.Color(204, 204, 204));
+
         jmArchivo.setMnemonic('f');
         jmArchivo.setText("Archivo");
 

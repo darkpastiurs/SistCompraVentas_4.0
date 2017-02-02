@@ -8,6 +8,7 @@ package vista;
 import com.sun.glass.events.KeyEvent;
 import controlador.Usuario_controller;
 import entidades.Usuario;
+import iconos.JButtonEfec;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.net.URL;
@@ -32,7 +33,8 @@ public class frmLogin extends javax.swing.JDialog {
 ////            g.setOpaque(False);
 //            super.paint(g);
 //        } 
-    public void iniciar() {                
+    public void iniciar() { 
+        
         Image image = new ImageIcon(url).getImage();
         if (validar.validarCamposTexto(txtUsuario) && validar.validarCamposTexto(txtContrasena)) {
             Usuario usuario = new Usuario(txtUsuario.getText().trim(), String.valueOf(txtContrasena.getPassword()));
