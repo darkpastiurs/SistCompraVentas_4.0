@@ -10,6 +10,7 @@ import entidades.Cliente;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -21,9 +22,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public final class frmAdmonClientes extends javax.swing.JDialog {
 
-    public Cliente clienteActual = new Cliente();
+    //public Cliente clienteActual = new Cliente();
     Cliente_controller controlador;
     List<Cliente> filtrado = new ArrayList<>();
+    private long numTotal;
     
     void llenarJTable(List<Cliente> listaDatos){
         
@@ -40,10 +42,11 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                         (dato.getApellidoPaterno() + " " + dato.getApellidoMaterno()).trim(),
                         dato.getTelefono()
                 };
-                modelo.addRow(nuevaFila); 
+                modelo.addRow(nuevaFila);
             }           
         });
         jtClientes.setModel(modelo);
+        lblResultados.setText("Cantidad de registros en total: " + jtClientes.getRowCount());
     }
     
     public static void reiniciarJTable(JTable jTable){
@@ -56,25 +59,30 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         switch (cboFiltro.getSelectedItem().toString()) {
             case "Nombre":
                 encontrado = filtrado.stream().filter(
-                        datos -> datos.getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
+                        datos -> datos.getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase()) 
+                                && datos.isEstado() == (!chkEstado.isSelected())).collect(Collectors.toList());
                 break;
             case "Apellido":
                 encontrado = filtrado.stream().filter(
-                        datos -> datos.getApellidoPaterno().toUpperCase().contains(txtBusqueda.getText().toUpperCase())
-                                || datos.getApellidoMaterno().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
+                        datos -> (datos.getApellidoPaterno().toUpperCase().contains(txtBusqueda.getText().toUpperCase())
+                                || datos.getApellidoMaterno().toUpperCase().contains(txtBusqueda.getText().toUpperCase()))
+                                && datos.isEstado() == (!chkEstado.isSelected())).collect(Collectors.toList());
                 break;
             case "DUI":
                 encontrado = filtrado.stream().filter(
-                        datos -> datos.getDUI().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
+                        datos -> datos.getDUI().toUpperCase().contains(txtBusqueda.getText().toUpperCase()) 
+                                && datos.isEstado() == (!chkEstado.isSelected())).collect(Collectors.toList());
                 break;
             case "NIT":
                 encontrado = filtrado.stream().filter(
-                        datos -> datos.getNIT().toUpperCase().contains(txtBusqueda.getText().toUpperCase())).collect(Collectors.toList());
+                        datos -> datos.getNIT().toUpperCase().contains(txtBusqueda.getText().toUpperCase()) 
+                                && datos.isEstado() == (!chkEstado.isSelected())).collect(Collectors.toList());
                 break;
             default:
                 break;
         }
         llenarJTable(encontrado);
+        lblResultados.setText("Clientes encontrados " + encontrado.size() + " de " + numTotal);
     }
     
     public void changeText(){
@@ -96,7 +104,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         });
     }
     
-    int obtenerClienteIndex(String dui){
+    int get(String dui){
         for(int i = 0; i < filtrado.size(); i++){
             if(filtrado.get(i).getDUI().equals(dui)){
                 return i;
@@ -118,6 +126,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         llenarJTable(filtrado);
         changeText();
         this.setLocationRelativeTo(null);
+        numTotal = jtClientes.getRowCount();
     }
     
     public frmAdmonClientes(javax.swing.JDialog parent, boolean modal) {
@@ -127,7 +136,8 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         filtrado = controlador.Obtener();
         llenarJTable(filtrado);
         changeText();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null);        
+        numTotal = jtClientes.getRowCount();
     }
 
     /**
@@ -143,7 +153,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtClientes = new javax.swing.JTable();
         chkEstado = new javax.swing.JCheckBox();
-        jLabel3 = new javax.swing.JLabel();
+        lblResultados = new javax.swing.JLabel();
         jpAcciones = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
@@ -166,6 +176,11 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
 
             }
         ));
+        jtClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jtClientesMouseExited(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtClientes);
 
         chkEstado.setText("Ver clientes eliminados");
@@ -175,7 +190,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
             }
         });
 
-        jLabel3.setText("Resultados... de ...");
+        lblResultados.setText("Resultados... de ...");
 
         javax.swing.GroupLayout jpDataLayout = new javax.swing.GroupLayout(jpData);
         jpData.setLayout(jpDataLayout);
@@ -185,8 +200,8 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jpDataLayout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(156, 156, 156)
+                        .addComponent(lblResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(chkEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -199,7 +214,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkEstado)
-                    .addComponent(jLabel3))
+                    .addComponent(lblResultados))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -278,6 +293,11 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEditar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -350,6 +370,14 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
+        frmClientes frm = new frmClientes(this, true);
+        frm.editar = false;
+        frm.setVisible(true);
+        if(!frm.isVisible()){
+            filtrado = controlador.Obtener();
+            llenarJTable(filtrado);
+            frm.dispose();
+        }
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -358,7 +386,46 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
+        int fila = jtClientes.getSelectedRow();
+        if(fila > -1){
+            int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Clientes",
+                    JOptionPane.YES_NO_OPTION);
+            if(respuesta == JOptionPane.YES_OPTION){
+                if(controlador.Borrar(filtrado.get(get(jtClientes.getValueAt(fila, 0).toString())))){
+                    JOptionPane.showMessageDialog(this,
+                                "El registro ha sido eliminado exitosamente",
+                                "Sistema de Compras y Ventas - Clientes",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    filtrado = controlador.Obtener();
+                    llenarJTable(filtrado);
+                }
+            }
+            
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int fila = jtClientes.getSelectedRow();
+        if(fila > -1){
+            Cliente clientActual = filtrado.get(fila);
+            frmClientes frm = new frmClientes(this, true, clientActual);
+            frm.editar = true;
+            frm.clienteActual = clientActual;
+            frm.setVisible(true);
+            if(!frm.isVisible()){
+                filtrado = controlador.Obtener();
+                llenarJTable(filtrado);
+                frm.dispose();
+            }
+        }
+       
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void jtClientesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtClientesMouseExited
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jtClientesMouseExited
 
     /**
      * @param args the command line arguments
@@ -421,12 +488,12 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel jpAcciones;
     private javax.swing.JPanel jpData;
     private javax.swing.JTable jtClientes;
+    private javax.swing.JLabel lblResultados;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
 }

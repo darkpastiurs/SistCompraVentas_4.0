@@ -7,11 +7,9 @@ package vista;
 
 import controlador.Cliente_controller;
 import entidades.Cliente;
-import iconos.JButtonEfec;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  *
@@ -23,10 +21,10 @@ public class frmClientes extends javax.swing.JDialog {
     JButton[] arrayBotones;
     boolean editar = false;
     Cliente_controller controlador;
+    public Cliente clienteActual = new Cliente();
     private long idCliente = 0;
   
     public void iniciarIngreso(){    
-        validar.estadosBotones(2, arrayBotones);
         validar.habilitarComponentes(this.getComponents());
         validar.habilitarComponentes(dcFechaNacimiento);
     }
@@ -35,7 +33,6 @@ public class frmClientes extends javax.swing.JDialog {
         validar.limpiarComponentes(this.getComponents());
         validar.deshabilitarComponentes(this.getComponents());
         validar.deshabilitarComponentes(dcFechaNacimiento);
-        validar.estadosBotones(1, arrayBotones);
         editar = false;
     }
     
@@ -46,15 +43,7 @@ public class frmClientes extends javax.swing.JDialog {
      */
     public frmClientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();     
-
-//            JButtonEfec btn1=new JButtonEfec("C:\\Users\\Gerard\\Documents\\NetBeansProjects\\SistCompraVentas_4.0(working)\\src\\iconos\\All-mail-48.png","Enviar Correo","Ctrl+E");
-//            jpContacto.add(btn1);
-//            frmClientes.add(jpContacto);
-//            jpAcciones.setVisible(true);
-
-        this.arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar};
-        
+        initComponents();       
         controlador = new Cliente_controller();
         validar.duiFormato(ftxtDUI, this);
         validar.nitFormato(ftxtNIT, this);
@@ -62,6 +51,45 @@ public class frmClientes extends javax.swing.JDialog {
         validar.validarSoloLetras(txtNombre);
         validar.validarSoloLetras(txtApellidos);
         finalizarIngreso();
+        this.setLocationRelativeTo(null);
+    }
+    
+    public frmClientes(javax.swing.JDialog parent, boolean modal) {
+        super(parent, modal);
+        initComponents(); 
+        controlador = new Cliente_controller();
+        validar.duiFormato(ftxtDUI, this);
+        validar.nitFormato(ftxtNIT, this);
+        validar.telefonoFormato(ftxtTelefono, this);
+        validar.validarSoloLetras(txtNombre);
+        validar.validarSoloLetras(txtApellidos);
+        iniciarIngreso();
+        this.setLocationRelativeTo(null);
+    }
+    
+    public frmClientes(javax.swing.JDialog parent, boolean modal, Cliente data) {
+        super(parent, modal);
+        initComponents(); 
+        clienteActual = data;
+        controlador = new Cliente_controller();
+        validar.duiFormato(ftxtDUI, this);
+        validar.nitFormato(ftxtNIT, this);
+        validar.telefonoFormato(ftxtTelefono, this);
+        validar.validarSoloLetras(txtNombre);
+        validar.validarSoloLetras(txtApellidos);        
+        if(clienteActual.getDUI() != null){
+                idCliente = clienteActual.getId();
+                txtNombre.setText(clienteActual.getNombre());
+                txtApellidos.setText((clienteActual.getApellidoPaterno() + " " + clienteActual.getApellidoMaterno()).trim());
+                validar.SelectedItem(cboGenero, clienteActual.getGenero());
+                dcFechaNacimiento.setDate(new Date(clienteActual.getFechaNacimiento().getTime()));
+                ftxtDUI.setText(clienteActual.getDUI());
+                ftxtNIT.setText(clienteActual.getNIT());
+                ftxtTelefono.setText(clienteActual.getTelefono());
+                txtEmail.setText(clienteActual.getEmail());
+                txtDireccion.setText(clienteActual.getDireccion());
+                iniciarIngreso();
+        }
         this.setLocationRelativeTo(null);
     }
 
@@ -103,11 +131,7 @@ public class frmClientes extends javax.swing.JDialog {
         txtDireccion = new javax.swing.JTextField();
         ftxtTelefono = new javax.swing.JFormattedTextField();
         jpAcciones = new javax.swing.JPanel();
-        btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         jLabel10.setText("jLabel10");
@@ -274,19 +298,6 @@ public class frmClientes extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/nuevo.png"))); // NOI18N
-        btnNuevo.setText("Nuevo");
-        btnNuevo.setDisabledIcon(null);
-        btnNuevo.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btnNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnNuevo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        btnNuevo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
-            }
-        });
-
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/save_256.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -300,50 +311,6 @@ public class frmClientes extends javax.swing.JDialog {
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/file_edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.setToolTipText("");
-        btnEditar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnEditar.setBorderPainted(false);
-        btnEditar.setContentAreaFilled(false);
-        btnEditar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEditar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete_256.png"))); // NOI18N
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnEliminar.setContentAreaFilled(false);
-        btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/icono_buscar.png"))); // NOI18N
-        btnBuscar.setText("Buscar");
-        btnBuscar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnBuscar.setContentAreaFilled(false);
-        btnBuscar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnBuscar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -369,16 +336,8 @@ public class frmClientes extends javax.swing.JDialog {
             jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAccionesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(500, 500, 500)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -387,17 +346,9 @@ public class frmClientes extends javax.swing.JDialog {
             .addGroup(jpAccionesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpAccionesLayout.createSequentialGroup()
-                        .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -422,56 +373,10 @@ public class frmClientes extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // TODO add your handling code here:
-        iniciarIngreso();
-        editar = false;
-    }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        iniciarIngreso();
-        editar = true;
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar a este cliente?", 
-                "Sistema de Compra y Venta - Cliente", JOptionPane.YES_NO_OPTION);
-        if(respuesta == JOptionPane.YES_OPTION){
-            if(controlador.Borrar(new Cliente(idCliente))){
-                JOptionPane.showMessageDialog(this, "El cliente ha sido eliminado con exito", 
-                        "Sistema de Compra y Venta - Cliente", JOptionPane.INFORMATION_MESSAGE);
-                finalizarIngreso();
-            }
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-        frmBuscarClientes frmBuscar = new frmBuscarClientes(this, true);
-        frmBuscar.setVisible(true);
-        if(frmBuscar.isVisible() == false){
-            if(frmBuscar.clienteActual.getDUI() != null){
-                idCliente = frmBuscar.clienteActual.getId();
-                txtNombre.setText(frmBuscar.clienteActual.getNombre());
-                txtApellidos.setText((frmBuscar.clienteActual.getApellidoPaterno() + " " + frmBuscar.clienteActual.getApellidoMaterno()).trim());
-                validar.SelectedItem(cboGenero, frmBuscar.clienteActual.getGenero());
-                dcFechaNacimiento.setDate(new Date(frmBuscar.clienteActual.getFechaNacimiento().getTime()));
-                ftxtDUI.setText(frmBuscar.clienteActual.getDUI());
-                ftxtNIT.setText(frmBuscar.clienteActual.getNIT());
-                ftxtTelefono.setText(frmBuscar.clienteActual.getTelefono());
-                txtEmail.setText(frmBuscar.clienteActual.getEmail());
-                txtDireccion.setText(frmBuscar.clienteActual.getDireccion());
-                validar.estadosBotones(3, arrayBotones);
-                frmBuscar.dispose();
-            }
-        }
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         finalizarIngreso();
+        this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -528,6 +433,7 @@ public class frmClientes extends javax.swing.JDialog {
                     }
                 }
             }
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -574,12 +480,8 @@ public class frmClientes extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> cboGenero;
     private com.toedter.calendar.JDateChooser dcFechaNacimiento;
     private javax.swing.JFormattedTextField ftxtDUI;
