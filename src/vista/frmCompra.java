@@ -18,8 +18,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -91,7 +89,6 @@ public final class frmCompra extends javax.swing.JDialog {
             boolean encontrado = false;
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 Inventario comparador = (Inventario) (modelo.getValueAt(i, 0));
-                System.out.println(comparador + " = " + inventarioActual);
                 if(comparador.getId() == inventarioActual.getId()){
                     encontrado = true;
                     break;
@@ -105,7 +102,7 @@ public final class frmCompra extends javax.swing.JDialog {
                 Object[] nuevaFila = {
                         inventarioActual,
                         ftxtPrecio.getText(),
-                        cantidad,
+                        new BigDecimal(cantidad).setScale(2, RoundingMode.HALF_UP),
                         new BigDecimal(subtotal).setScale(2, RoundingMode.HALF_UP)
                 }; 
                 modelo.addRow(nuevaFila);
@@ -581,6 +578,11 @@ public final class frmCompra extends javax.swing.JDialog {
 
             }
         ));
+        jtDetalles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtDetallesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtDetalles);
 
         jLabel15.setText("SubTotal:");
@@ -766,7 +768,14 @@ public final class frmCompra extends javax.swing.JDialog {
 
     private void btnAñadirDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirDetalleActionPerformed
         // TODO add your handling code here:
-        addCart();
+        if(!ftxtPrecio.getText().equals("")){
+            addCart();
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                    "Ingresa un producto o su precio primero",
+                    "Sistemas de Compras y Ventas - Compras", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAñadirDetalleActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -809,7 +818,8 @@ public final class frmCompra extends javax.swing.JDialog {
                     nuevaCompra.setEmpleado(frmMenuPrincipal.usuarioActual.getEmpleado());
                     boolean Registrar = new Compra_controller().Registrar(nuevaCompra);
                     if(Registrar){
-                        JOptionPane.showMessageDialog(this,"La compra ha sido ingresada correctamente","Sistema de Compras y Ventas - Compra",JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this,"La compra ha sido ingresada correctamente",
+                                "Sistema de Compras y Ventas - Compra",JOptionPane.ERROR_MESSAGE);
                         finalizarIngreso();
                     }
                 }
@@ -850,6 +860,29 @@ public final class frmCompra extends javax.swing.JDialog {
             frm.dispose();
         }
     }//GEN-LAST:event_btnHistorialActionPerformed
+
+    private void jtDetallesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDetallesMouseClicked
+        // TODO add your handling code here:
+        int columna = jtDetalles.getSelectedColumn();
+        int fila = jtDetalles.getSelectedRow();
+        if(columna > -1){
+            if(jtDetalles.getColumnName(columna).contains("Cantidad")){
+                BigDecimal cantidad = new BigDecimal(JOptionPane.showInputDialog(this, 
+                        "Escribe la cantidad para el producto " + jtDetalles.getValueAt(fila, 0).toString())).setScale(2, RoundingMode.HALF_UP);
+                jtDetalles.setValueAt(cantidad, fila, columna);
+                double subtotal = Double.parseDouble(cantidad.toString()) * Double.parseDouble(jtDetalles.getValueAt(fila, 1).toString());
+                jtDetalles.setValueAt(subtotal, fila, 3);
+                calcularTotal();
+            } else if(jtDetalles.getColumnName(columna).contains("Precio Unitario")){
+                BigDecimal precio = new BigDecimal(JOptionPane.showInputDialog(this, 
+                        "Escribe el precio para el producto " + jtDetalles.getValueAt(fila, 0).toString())).setScale(2, RoundingMode.HALF_UP);
+                jtDetalles.setValueAt(precio, fila, columna);
+                double subtotal = Double.parseDouble(precio.toString()) * Double.parseDouble(jtDetalles.getValueAt(fila, 2).toString());
+                jtDetalles.setValueAt(subtotal, fila, 3);
+                calcularTotal();
+            }
+        }
+    }//GEN-LAST:event_jtDetallesMouseClicked
 
     /**
      * @param args the command line arguments
