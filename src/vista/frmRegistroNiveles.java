@@ -5,8 +5,8 @@
  */
 package vista;
 
-import controlador.Marca_controller;
-import entidades.Marca;
+import controlador.Nivel_controller;
+import entidades.Nivel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -14,48 +14,40 @@ import javax.swing.JOptionPane;
  *
  * @author darkpastiursSennin
  */
-public class frmRegistroMarcas extends javax.swing.JDialog {
+public class frmRegistroNiveles extends javax.swing.JDialog {
 
-    Marca_controller controlador;
     Validaciones validar = new Validaciones();
     JButton[] arrayBotones;
-    private long idMarca = 0;
     boolean editar = false;
-    
-    public void iniciarIngreso(){    
-        validar.estadosBotones(2, arrayBotones);
-        validar.habilitarComponentes(this.getComponents());
-    }
-    
-    private void finalizarIngreso(){        
-        validar.limpiarComponentes(this.getComponents());
-        validar.deshabilitarComponentes(this.getComponents());
-        validar.estadosBotones(1, arrayBotones);
-        editar = false;
-    }
-    
+    private Nivel_controller controlador;
+    private long idNivel;
+
     /**
-     * Creates new form frmMarca
+     * Creates new form frmNiveles
+     *
      * @param parent
      * @param modal
      */
-    public frmRegistroMarcas(java.awt.Frame parent, boolean modal) {
+    public frmRegistroNiveles(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        controlador = new Marca_controller();
-        arrayBotones = new JButton[]{btnGuardar, btnCancelar};
-        finalizarIngreso();
+        controlador = new Nivel_controller();
+        this.arrayBotones = new JButton[]{btnGuardar, btnCancelar};
+        validar.estadosBotones(1, arrayBotones);
+        validar.deshabilitarComponentes(this.getComponents());
     }
-    
-    public frmRegistroMarcas(javax.swing.JDialog parent, boolean modal) {
+
+    public frmRegistroNiveles(javax.swing.JDialog parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        controlador = new Marca_controller();
-        arrayBotones = new JButton[]{btnGuardar, btnCancelar};
-        finalizarIngreso();
+        controlador = new Nivel_controller();
+        this.arrayBotones = new JButton[]{btnGuardar, btnCancelar};
+        validar.estadosBotones(1, arrayBotones);
+        validar.deshabilitarComponentes(this.getComponents());
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,16 +59,17 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
 
         jpDatos = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtMarca = new javax.swing.JTextField();
-        jpAcciones = new javax.swing.JPanel();
+        txtNivel = new javax.swing.JTextField();
+        jpBotones = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Marca - Sistema de Compra y Venta");
+        setTitle("Niveles - Sistema de Compra y Venta");
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel1.setText("Nombre de marca:");
+        jLabel1.setText("Nombre de nivel:");
 
         javax.swing.GroupLayout jpDatosLayout = new javax.swing.GroupLayout(jpDatos);
         jpDatos.setLayout(jpDatosLayout);
@@ -85,27 +78,23 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
             .addGroup(jpDatosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtNivel))
                 .addContainerGap())
         );
         jpDatosLayout.setVerticalGroup(
             jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpDatosLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDatosLayout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jpAcciones.setBackground(new java.awt.Color(0, 102, 102));
+        jpBotones.setBackground(new java.awt.Color(0, 102, 102));
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/save_48x48.png"))); // NOI18N
         btnGuardar.setText("Guardar");
-        btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        btnGuardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnGuardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -114,30 +103,31 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancel_48x48.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
-        btnCancelar.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        btnCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnCancelar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        btnCancelar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jpAccionesLayout = new javax.swing.GroupLayout(jpAcciones);
-        jpAcciones.setLayout(jpAccionesLayout);
-        jpAccionesLayout.setHorizontalGroup(
-            jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpAccionesLayout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
-                .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                .addComponent(btnCancelar)
-                .addContainerGap(44, Short.MAX_VALUE))
+        javax.swing.GroupLayout jpBotonesLayout = new javax.swing.GroupLayout(jpBotones);
+        jpBotones.setLayout(jpBotonesLayout);
+        jpBotonesLayout.setHorizontalGroup(
+            jpBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpBotonesLayout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
-        jpAccionesLayout.setVerticalGroup(
-            jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpAccionesLayout.createSequentialGroup()
+        jpBotonesLayout.setVerticalGroup(
+            jpBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpBotonesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,18 +135,20 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(jpBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jpDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jpAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jpDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jpAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jpBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -164,34 +156,39 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        boolean validarTexto = validar.validarCamposTexto(txtMarca);
-        if(validarTexto){
-            Marca marca = new Marca();
-            marca.setNombre(txtMarca.getText().trim());
-            if(editar == false){ //Se va a guardar uno nuevo
-                if(controlador.Registrar(marca)){
+        boolean validarTexto = validar.validarCamposTexto(txtNivel);
+        if (validarTexto) {
+            Nivel nivel_o = new Nivel();
+            nivel_o.setNombre(txtNivel.getText().trim());
+            if (editar == false) {
+                if (controlador.Registrar(nivel_o)) {
                     JOptionPane.showMessageDialog(this,
-                                    "El registro ha sido ingresado exitosamente",
-                                    "Sistema de Compras y Ventas - Marcas",
-                                    JOptionPane.INFORMATION_MESSAGE);  
-                    finalizarIngreso();
+                            "El nivel ha sido registrado",
+                            "Sistema de Compra y Venta - Nivel",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
-            } else{
-                marca.setId(idMarca);
-                int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de editar estos datos?",
-                        "Sistema de Compras y Ventas - Marcas", JOptionPane.YES_NO_OPTION);
-                if(respuesta == JOptionPane.YES_OPTION){
-                    if(controlador.Editar(marca)){
-                        JOptionPane.showMessageDialog(this,
-                                    "El registro ha sido editado exitosamente",
-                                    "Sistema de Compras y Ventas - Marcas",
-                                    JOptionPane.INFORMATION_MESSAGE);  
-                        finalizarIngreso();
-                    }
+            } else {
+                nivel_o.setId(idNivel);
+                if(controlador.Editar(nivel_o)){
+                    JOptionPane.showMessageDialog(this,
+                            "El nivel ha sido editado",
+                            "Sistema de Compra y Venta - Nivel",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             }
+            validar.estadosBotones(1, arrayBotones);
+            validar.limpiarComponentes(this.getComponents());
+            validar.deshabilitarComponentes(this.getComponents());
         }
+
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        validar.estadosBotones(1, arrayBotones);
+        validar.deshabilitarComponentes(this.getComponents());
+        validar.limpiarComponentes(this.getComponents());
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,13 +207,13 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroMarcas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroNiveles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroMarcas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroNiveles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroMarcas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroNiveles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmRegistroMarcas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmRegistroNiveles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -224,7 +221,7 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmRegistroMarcas dialog = new frmRegistroMarcas(new javax.swing.JFrame(), true);
+                frmRegistroNiveles dialog = new frmRegistroNiveles(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -240,8 +237,8 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jpAcciones;
+    private javax.swing.JPanel jpBotones;
     private javax.swing.JPanel jpDatos;
-    private javax.swing.JTextField txtMarca;
+    private javax.swing.JTextField txtNivel;
     // End of variables declaration//GEN-END:variables
 }

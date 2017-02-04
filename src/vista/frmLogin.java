@@ -162,6 +162,8 @@ public class frmLogin extends javax.swing.JDialog {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/registration-128.png"))); // NOI18N
 
+        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+
         btnIniciar1.setBackground(new java.awt.Color(102, 102, 102));
         btnIniciar1.setFont(new java.awt.Font("Trebuchet MS", 1, 12)); // NOI18N
         btnIniciar1.setText("Iniciar Sesion");
