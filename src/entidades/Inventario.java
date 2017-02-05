@@ -6,6 +6,7 @@
 package entidades;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  *
@@ -69,7 +70,4 @@ public class Inventario {
     public String toString() {
         return this._producto._nombre;
     }
-    
-    
-    
 }

@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -34,13 +35,13 @@ public final class frmCompra extends javax.swing.JDialog {
     public frmCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.btnNuevoProveedor.setMnemonic(KeyEvent.VK_F2);
-        this.btnBuscarProv.setMnemonic(KeyEvent.VK_F3);
         this.setLocationRelativeTo(null);                
         String[] columnas = {"Producto", "Precio Unitario", "Cantidad", "Subtotal"};
         DefaultTableModel modelo = new DefaultTableModelImpl();
         modelo.setColumnIdentifiers(columnas);
         jtDetalles.setModel(modelo);
+        validar.preciosFormato(ftxtPrecio, this);
+        validar.validarSoloDecimales(ftxtPrecio);
         finalizarIngreso();
     }
     
@@ -408,7 +409,7 @@ public final class frmCompra extends javax.swing.JDialog {
 
         jLabel14.setText("Precio de Compra: ");
 
-        ftxtPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ftxtPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#.00"))));
 
         btnAñadirDetalle.setText("Añadir");
         btnAñadirDetalle.addActionListener(new java.awt.event.ActionListener() {
@@ -768,13 +769,18 @@ public final class frmCompra extends javax.swing.JDialog {
 
     private void btnAñadirDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirDetalleActionPerformed
         // TODO add your handling code here:
-        if(!ftxtPrecio.getText().equals("")){
-            addCart();
-        } else {
+        if(ftxtPrecio.getText().equals("")){
             JOptionPane.showMessageDialog(this, 
-                    "Ingresa un producto o su precio primero",
+                    "Ingresa un precio primero",
                     "Sistemas de Compras y Ventas - Compras", 
                     JOptionPane.ERROR_MESSAGE);
+        } else if(inventarioActual.getId() == 0){
+            JOptionPane.showMessageDialog(this, 
+                    "Ingresa un producto primero",
+                    "Sistemas de Compras y Ventas - Compras", 
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            addCart();
         }
     }//GEN-LAST:event_btnAñadirDetalleActionPerformed
 

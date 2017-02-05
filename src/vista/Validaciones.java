@@ -13,6 +13,7 @@ import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,6 +36,7 @@ import javax.swing.JViewport;
 import javax.swing.MenuElement;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -124,7 +126,8 @@ public class Validaciones {
     
     public void preciosFormato(JFormattedTextField txt, Component ventana){
         try{
-            txt = new JFormattedTextField(new DecimalFormat("###,##"));         
+            DecimalFormat df = new DecimalFormat("#.##");
+            txt = new JFormattedTextField(df);
         } catch(Exception ex){
             JOptionPane.showMessageDialog(ventana, "Error: " + ex.getMessage(), "Sistema de Compra y Ventas - Validaciones", JOptionPane.ERROR_MESSAGE);
         }
@@ -289,6 +292,19 @@ public class Validaciones {
             public void keyTyped(KeyEvent e){
                 char c = e.getKeyChar();                
                 if(String.valueOf(c).matches("^.*[0-9].*$") == false){
+                    e.consume();
+                    a.getToolkit().beep();
+                }
+            }
+        });
+    }
+    
+    final void validarSoloDecimales(JTextField a){
+        a.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e){
+                char c = e.getKeyChar();                
+                if(String.valueOf(c).matches("^.*[0-9 .].*$") == false){
                     e.consume();
                     a.getToolkit().beep();
                 }

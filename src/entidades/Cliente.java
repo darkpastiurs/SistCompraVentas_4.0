@@ -147,7 +147,4 @@ public class Cliente {
     public String toString() {
         return _nombre + " " + _apellidoPaterno + " " + _apellidoMaterno;
     }
-    
-    
-    
 }
