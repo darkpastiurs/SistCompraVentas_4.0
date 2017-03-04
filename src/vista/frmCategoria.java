@@ -19,7 +19,6 @@ public class frmCategoria extends javax.swing.JDialog {
     private Validaciones validar = new Validaciones();
     private boolean editar = false;
     private Categoria_controller controlador;
-    private Categoria categoriaActual;
     private long idCategoria = 0;
     
     public void iniciarIngreso(){
@@ -58,10 +57,9 @@ public class frmCategoria extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Categoria_controller();
-        categoriaActual = data;
-        if(categoriaActual.getNombre() != null){
-            idCategoria = categoriaActual.getId();
-            this.txtCategoria.setText(categoriaActual.getNombre());
+        if(data.getNombre() != null){
+            idCategoria = data.getId();
+            this.txtCategoria.setText(data.getNombre());
             editar = true;
             iniciarIngreso();
         }
@@ -202,6 +200,7 @@ public class frmCategoria extends javax.swing.JDialog {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         finalizarIngreso();
+        this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**

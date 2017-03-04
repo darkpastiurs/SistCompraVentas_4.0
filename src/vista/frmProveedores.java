@@ -16,11 +16,10 @@ import javax.swing.JOptionPane;
  */
 public class frmProveedores extends javax.swing.JDialog {
 
-    Validaciones validar;
-    JButton[] arrayBotones;
-    boolean editar = false;
-    Proveedor_controller controlador;
-    long idProveedor;
+    private Validaciones validar;
+    private boolean editar = false;
+    private Proveedor_controller controlador;
+    private long idProveedor;
     /**
      * Creates new form frmProveedores
      * @param parent
@@ -30,14 +29,12 @@ public class frmProveedores extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar, btnSalir};
         validar = new Validaciones();
         controlador = new Proveedor_controller();
-        //validar.nrcFormato(ftxtRegistro, this);
-        txtRegistro.setDocument(new JTextFieldLimit(8));
+        txtNRC.setDocument(new JTextFieldLimit(8));
         validar.nitFormato(ftxtNIT, this);
         validar.telefonoFormato(ftxtTelefono, this);
-        validar.validarSoloNumeros(txtRegistro);
+        validar.validarSoloNumeros(txtNRC);
         finalizarIngreso();
     }
     
@@ -45,27 +42,49 @@ public class frmProveedores extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar, btnSalir};
         validar = new Validaciones();
         controlador = new Proveedor_controller();
         //validar.nrcFormato(ftxtRegistro, this);
-        txtRegistro.setDocument(new JTextFieldLimit(8));
+        txtNRC.setDocument(new JTextFieldLimit(8));
         validar.nitFormato(ftxtNIT, this);
         validar.telefonoFormato(ftxtTelefono, this);
-        validar.validarSoloNumeros(txtRegistro);
-        finalizarIngreso();
+        validar.validarSoloNumeros(txtNRC);
+        iniciarIngreso();
+    }
+    
+    public frmProveedores(javax.swing.JDialog parent, boolean modal, Proveedor data) {
+        super(parent, modal);
+        initComponents();
+        this.setLocationRelativeTo(null);
+        validar = new Validaciones();
+        controlador = new Proveedor_controller();
+        //validar.nrcFormato(ftxtRegistro, this);
+        txtNRC.setDocument(new JTextFieldLimit(8));
+        validar.nitFormato(ftxtNIT, this);
+        validar.telefonoFormato(ftxtTelefono, this);
+        validar.validarSoloNumeros(txtNRC);
+        if(data.getNIT() != null){
+            idProveedor= data.getId();
+            txtNombre.setText(data.getNombre());
+            ftxtNIT.setText(data.getNIT());
+            txtNRC.setText(data.getNRC(false));
+            txtaDireccion.setText(data.getDireccion());
+            ftxtTelefono.setText(data.getTelefono());
+            txtEmail.setText(data.getEmail());
+            txtSitioWeb.setText(data.getWebsite());
+            editar = true;
+            iniciarIngreso();
+        }
+        
     }
     
     public void iniciarIngreso(){    
-        validar.estadosBotones(2, arrayBotones);
         validar.habilitarComponentes(this.getComponents());
     }
     
     private void finalizarIngreso(){        
         validar.limpiarComponentes(this.getComponents());
         validar.deshabilitarComponentes(this.getComponents());
-       // validar.deshabilitarComponentes(dcFechaIngreso);
-        validar.estadosBotones(1, arrayBotones);
         editar = false;
     }
 
@@ -96,15 +115,10 @@ public class frmProveedores extends javax.swing.JDialog {
         txtEmail = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtSitioWeb = new javax.swing.JTextField();
-        txtRegistro = new javax.swing.JTextField();
+        txtNRC = new javax.swing.JTextField();
         jpAcciones = new javax.swing.JPanel();
-        btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -162,7 +176,7 @@ public class frmProveedores extends javax.swing.JDialog {
                                         .addGap(28, 28, 28)
                                         .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtRegistro))))
+                                        .addComponent(txtNRC))))
                             .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpDatosLayout.createSequentialGroup()
@@ -195,7 +209,7 @@ public class frmProveedores extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(ftxtNIT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(txtRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNRC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -220,31 +234,10 @@ public class frmProveedores extends javax.swing.JDialog {
                         .addContainerGap())))
         );
 
-        btnNuevo.setText("Nuevo");
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
-            }
-        });
-
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -255,39 +248,15 @@ public class frmProveedores extends javax.swing.JDialog {
             }
         });
 
-        btnSalir.setText("Salir");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jpAccionesLayout = new javax.swing.GroupLayout(jpAcciones);
         jpAcciones.setLayout(jpAccionesLayout);
         jpAccionesLayout.setHorizontalGroup(
             jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAccionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnNuevo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(79, 79, 79)
                 .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(219, 219, 219)
                 .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSalir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpAccionesLayout.setVerticalGroup(
@@ -295,13 +264,8 @@ public class frmProveedores extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpAccionesLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo)
                     .addComponent(btnGuardar)
-                    .addComponent(btnEditar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnSalir)
-                    .addComponent(btnBuscar))
+                    .addComponent(btnCancelar))
                 .addContainerGap())
         );
 
@@ -335,21 +299,16 @@ public class frmProveedores extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // TODO add your handling code here:
-        iniciarIngreso();
-    }//GEN-LAST:event_btnNuevoActionPerformed
-
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         boolean validarTexto = validar.validarCamposTexto(txtNombre) && validar.validarCamposTexto(ftxtNIT)
-                && validar.validarCamposTexto(txtRegistro) && validar.validarCamposTexto(txtaDireccion)
+                && validar.validarCamposTexto(txtNRC) && validar.validarCamposTexto(txtaDireccion)
                 && validar.validarCamposTexto(ftxtTelefono);
         if (validarTexto) {
             Proveedor proveedor = new Proveedor();
             proveedor.setNombre(txtNombre.getText().trim());
             proveedor.setNIT(ftxtNIT.getText());
-            proveedor.setNRC(txtRegistro.getText());
+            proveedor.setNRC(txtNRC.getText());
             proveedor.setDireccion(txtaDireccion.getText());
             proveedor.setTelefono(ftxtTelefono.getText());
             if (!txtEmail.getText().trim().equals("")) {
@@ -383,62 +342,15 @@ public class frmProveedores extends javax.swing.JDialog {
                 }
 
             }
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        iniciarIngreso();
-        editar = true;
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Esta seguro de eliminar este proveedor?", 
-                "Sistema de Compras y Ventas - Proveedores", JOptionPane.YES_NO_OPTION);
-        if(respuesta == JOptionPane.YES_OPTION){
-            if(controlador.Borrar(new Proveedor(idProveedor))){
-                JOptionPane.showMessageDialog(this,
-                                "El proveedor se ha eliminado exitosamente", "Sistema de Compras y Ventas - Proveedores",
-                                JOptionPane.INFORMATION_MESSAGE);
-                finalizarIngreso();
-            }
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         finalizarIngreso();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
         this.setVisible(false);
-    }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-        frmAdmonProveedores frm = new frmAdmonProveedores(this, true);
-        frm.setVisible(true);
-        if(frm.isVisible() == false){
-            if(frm.proveedorActual.getNombre() != null){
-                idProveedor = frm.proveedorActual.getId();
-                txtNombre.setText(frm.proveedorActual.getNombre());
-                ftxtNIT.setText(frm.proveedorActual.getNIT());
-                txtRegistro.setText(frm.proveedorActual.getNRC(false));
-                txtaDireccion.setText(frm.proveedorActual.getDireccion());
-                ftxtTelefono.setText(frm.proveedorActual.getTelefono());
-                if(!"No posee correo".equals(frm.proveedorActual.getEmail())){
-                    txtEmail.setText(frm.proveedorActual.getEmail());
-                }
-                if(!"No posee sitio web".equals(frm.proveedorActual.getWebsite())){
-                    txtSitioWeb.setText(frm.proveedorActual.getWebsite());
-                }
-                frm.dispose();
-                validar.estadosBotones(3, arrayBotones);
-            }
-        }
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -483,13 +395,8 @@ public class frmProveedores extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnSalir;
     private javax.swing.JFormattedTextField ftxtNIT;
     private javax.swing.JFormattedTextField ftxtTelefono;
     private javax.swing.JLabel jLabel1;
@@ -507,8 +414,8 @@ public class frmProveedores extends javax.swing.JDialog {
     private javax.swing.JPanel jpAcciones;
     private javax.swing.JPanel jpDatos;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtNRC;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtRegistro;
     private javax.swing.JTextField txtSitioWeb;
     private javax.swing.JTextArea txtaDireccion;
     // End of variables declaration//GEN-END:variables

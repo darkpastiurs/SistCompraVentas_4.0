@@ -16,21 +16,18 @@ import javax.swing.JOptionPane;
  */
 public class frmMarca extends javax.swing.JDialog {
 
-    Marca_controller controlador;
-    Validaciones validar = new Validaciones();
-    JButton[] arrayBotones;
+    private Marca_controller controlador;
+    private Validaciones validar = new Validaciones();
     private long idMarca = 0;
-    boolean editar = false;
+    private boolean editar = false;
     
     public void iniciarIngreso(){    
-        validar.estadosBotones(2, arrayBotones);
         validar.habilitarComponentes(this.getComponents());
     }
     
     private void finalizarIngreso(){        
         validar.limpiarComponentes(this.getComponents());
         validar.deshabilitarComponentes(this.getComponents());
-        validar.estadosBotones(1, arrayBotones);
         editar = false;
     }
     
@@ -44,7 +41,6 @@ public class frmMarca extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Marca_controller();
-        arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar, btnSalir};
         finalizarIngreso();
     }
     
@@ -53,8 +49,20 @@ public class frmMarca extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Marca_controller();
-        arrayBotones = new JButton[]{btnNuevo, btnGuardar, btnEditar, btnEliminar, btnBuscar, btnCancelar, btnSalir};
-        finalizarIngreso();
+        iniciarIngreso();
+    }
+    
+    public frmMarca(javax.swing.JDialog parent, boolean modal, Marca data) {
+        super(parent, modal);
+        initComponents();
+        controlador = new Marca_controller();
+        this.setLocationRelativeTo(null);
+        if(data.getNombre() != null){
+            idMarca = data.getId();
+            txtMarca.setText(data.getNombre());
+            editar = true;
+            iniciarIngreso();
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,13 +77,8 @@ public class frmMarca extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         txtMarca = new javax.swing.JTextField();
         jpAcciones = new javax.swing.JPanel();
-        btnNuevo = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Marca - Sistema de Compra y Venta");
@@ -103,13 +106,6 @@ public class frmMarca extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        btnNuevo.setText("Nuevo");
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
-            }
-        });
-
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,33 +113,10 @@ public class frmMarca extends javax.swing.JDialog {
             }
         });
 
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-
         btnCancelar.setText("Cancelar");
-
-        btnSalir.setText("Salir");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -152,34 +125,19 @@ public class frmMarca extends javax.swing.JDialog {
         jpAccionesLayout.setHorizontalGroup(
             jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpAccionesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnNuevo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(79, 79, 79)
                 .addComponent(btnGuardar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(219, 219, 219)
                 .addComponent(btnCancelar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSalir)
-                .addContainerGap())
+                .addGap(69, 69, 69))
         );
         jpAccionesLayout.setVerticalGroup(
             jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpAccionesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo)
                     .addComponent(btnGuardar)
-                    .addComponent(btnEditar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnBuscar)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnSalir)))
+                    .addComponent(btnCancelar)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -236,53 +194,15 @@ public class frmMarca extends javax.swing.JDialog {
                     }
                 }
             }
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        iniciarIngreso();
-    }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        iniciarIngreso();
-        editar = true;
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro que quieres eliminar estos datos?",
-                        "Sistema de Compras y Ventas - Marcas", JOptionPane.YES_NO_OPTION);
-        if(respuesta == JOptionPane.YES_OPTION){
-            if(controlador.Quitar(new Marca(idMarca))){
-                JOptionPane.showMessageDialog(this,
-                                    "El registro ha sido eliminado exitosamente",
-                                    "Sistema de Compras y Ventas - Marcas",
-                                    JOptionPane.INFORMATION_MESSAGE);  
-                finalizarIngreso();
-            }
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-        frmBuscarMarca frmBuscar = new frmBuscarMarca(this, true);
-        frmBuscar.setVisible(true);
-        if(frmBuscar.isVisible() == false){
-            if(frmBuscar.marcaActual.getNombre() != null){
-                txtMarca.setText(frmBuscar.marcaActual.getNombre());
-                idMarca = frmBuscar.marcaActual.getId();
-                validar.estadosBotones(3, arrayBotones);
-                frmBuscar.dispose();
-            }
-        }
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+        finalizarIngreso();
         this.setVisible(false);
-    }//GEN-LAST:event_btnSalirActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,13 +247,8 @@ public class frmMarca extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jpAcciones;
     private javax.swing.JPanel jpDatos;

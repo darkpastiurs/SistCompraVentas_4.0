@@ -20,7 +20,6 @@ public class frmClientes extends javax.swing.JDialog {
     private Validaciones validar = new Validaciones();
     private boolean editar = false;
     private Cliente_controller controlador;
-    private Cliente clienteActual = new Cliente();
     private long idCliente = 0;
   
     public void iniciarIngreso(){    
@@ -69,25 +68,24 @@ public class frmClientes extends javax.swing.JDialog {
     public frmClientes(javax.swing.JDialog parent, boolean modal, Cliente data) {
         super(parent, modal);
         initComponents(); 
-        clienteActual = data;
         controlador = new Cliente_controller();
         validar.duiFormato(ftxtDUI, this);
         validar.nitFormato(ftxtNIT, this);
         validar.telefonoFormato(ftxtTelefono, this);
         validar.validarSoloLetras(txtNombre);
         validar.validarSoloLetras(txtApellidos);        
-        if(clienteActual.getDUI() != null){
+        if(data.getDUI() != null){
             editar = true;
-                idCliente = clienteActual.getId();
-                txtNombre.setText(clienteActual.getNombre());
-                txtApellidos.setText((clienteActual.getApellidoPaterno() + " " + clienteActual.getApellidoMaterno()).trim());
-                validar.SelectedItem(cboGenero, clienteActual.getGenero());
-                dcFechaNacimiento.setDate(new Date(clienteActual.getFechaNacimiento().getTime()));
-                ftxtDUI.setText(clienteActual.getDUI());
-                ftxtNIT.setText(clienteActual.getNIT());
-                ftxtTelefono.setText(clienteActual.getTelefono());
-                txtEmail.setText(clienteActual.getEmail());
-                txtDireccion.setText(clienteActual.getDireccion());
+                idCliente = data.getId();
+                txtNombre.setText(data.getNombre());
+                txtApellidos.setText((data.getApellidoPaterno() + " " + data.getApellidoMaterno()).trim());
+                validar.SelectedItem(cboGenero, data.getGenero());
+                dcFechaNacimiento.setDate(new Date(data.getFechaNacimiento().getTime()));
+                ftxtDUI.setText(data.getDUI());
+                ftxtNIT.setText(data.getNIT());
+                ftxtTelefono.setText(data.getTelefono());
+                txtEmail.setText(data.getEmail());
+                txtDireccion.setText(data.getDireccion());
                 iniciarIngreso();
         }
         this.setLocationRelativeTo(null);

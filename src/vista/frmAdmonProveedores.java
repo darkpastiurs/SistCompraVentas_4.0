@@ -10,6 +10,7 @@ import entidades.Proveedor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -24,8 +25,8 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
     /**
      * Creates new form frmBuscarProveedor
      */
-    Proveedor_controller controlador = new Proveedor_controller();
-    List<Proveedor> filtrado = new ArrayList<>();
+    private Proveedor_controller controlador = new Proveedor_controller();
+    private List<Proveedor> filtrado = new ArrayList<>();
     public Proveedor proveedorActual = new Proveedor();
     
      final void llenarJTable(List<Proveedor> listaDatos){
@@ -50,12 +51,12 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         jtProveedores.setModel(modelo);
     }
     
-    public static void reiniciarJTable(JTable jTable){
+    private static void reiniciarJTable(JTable jTable){
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         while(modelo.getRowCount()>0)modelo.removeRow(0);       
     }
     
-    public void buscarTXT(){
+    private void buscarTXT(){
         List<Proveedor> encontrado = new ArrayList<>();
         switch (cboFiltro.getSelectedItem().toString()) {
             case "Nombre":
@@ -76,7 +77,7 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         llenarJTable(encontrado);
     }
     
-    public final void changeText(){
+    private final void changeText(){
         txtBusqueda.getDocument().addDocumentListener(new DocumentListener(){
             @Override
             public void insertUpdate(DocumentEvent de) {
@@ -95,7 +96,7 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         });
     }
     
-    int obtenerProveedorIndex(String nit){
+    private int obtenerProveedorIndex(String nit){
         for(int i = 0; i < filtrado.size(); i++){
             if(filtrado.get(i).getNIT().equals(nit)){
                 return i;
@@ -236,6 +237,11 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEliminar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/edit.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -247,6 +253,11 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEditar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         btnEditar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -302,7 +313,54 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
+        frmProveedores frm = new frmProveedores(this, true);
+        frm.setVisible(true);
+        if(!frm.isVisible()){
+            filtrado = controlador.Obtener();
+            llenarJTable(filtrado);
+            frm.dispose();
+        }
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int fila = jtProveedores.getSelectedRow();
+        if(fila > -1){
+            proveedorActual = filtrado.get(obtenerProveedorIndex(jtProveedores.getValueAt(fila, 1).toString()));
+            frmProveedores frm = new frmProveedores(this, true, proveedorActual);
+            frm.setVisible(true);
+            if(!frm.isVisible()){
+                filtrado = controlador.Obtener();
+                llenarJTable(filtrado);
+                frm.dispose();
+            }
+        } else {
+             JOptionPane.showMessageDialog(this,
+                                "Selecciona al proveedor primero",
+                                "Sistema de Compras y Ventas - Proveedores",
+                                JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int fila = jtProveedores.getSelectedRow();
+        if(fila > -1){
+            proveedorActual = filtrado.get(obtenerProveedorIndex(jtProveedores.getValueAt(fila, 1).toString()));
+            int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Proveedores",
+                    JOptionPane.YES_NO_OPTION);
+            if(respuesta == JOptionPane.YES_OPTION){
+                if(controlador.Borrar(proveedorActual)){
+                    JOptionPane.showMessageDialog(this,
+                                    "El registro ha sido eliminado exitosamente",
+                                    "Sistema de Compras y Ventas - Proveedores",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        filtrado = controlador.Obtener();
+                        llenarJTable(filtrado);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments

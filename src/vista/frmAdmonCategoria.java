@@ -26,7 +26,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
      * Creates new form frmAdmonCategoria
      */
     
-    public Categoria categoriaActual;
+    public Categoria categoriaActual = new Categoria();
     private final Categoria_controller controlador;
     private List<Categoria> filtrado = new ArrayList<>();
     
@@ -35,7 +35,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         while(modelo.getRowCount()>0)modelo.removeRow(0);       
     }
     
-    final void llenarJTable(List<Categoria> lista){        
+    private final void llenarJTable(List<Categoria> lista){        
         reiniciarJTable(this.jtCategorias);
         String[] columnas = {"Categoria"};
         DefaultTableModel modelo = new DefaultTableModelImpl();
@@ -51,16 +51,16 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         jtCategorias.setModel(modelo);
     }
     
-    public void buscarTXT(){
+    private void buscarTXT(){
         List<Categoria> encontrado = new ArrayList<>();
         encontrado = filtrado.stream().filter(
-                datos -> datos.getNombre().toUpperCase().contains(jTextField1.getText().toUpperCase())
+                datos -> datos.getNombre().toUpperCase().contains(txtBusqueda.getText().toUpperCase())
         ).collect(Collectors.toList());
         llenarJTable(encontrado);
     }
     
-    public final void changeText(){
-        jTextField1.getDocument().addDocumentListener(new DocumentListener(){
+    private final void changeText(){
+        txtBusqueda.getDocument().addDocumentListener(new DocumentListener(){
             @Override
             public void insertUpdate(DocumentEvent de) {
                 buscarTXT();
@@ -78,7 +78,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         });
     }
     
-    int obtenerCategoriaIndex(String categoriaStr){
+    private int obtenerCategoriaIndex(String categoriaStr){
         for(int i = 0; i < filtrado.size(); i++){
             if(filtrado.get(i).getNombre().equals(categoriaStr)){
                 return i;
@@ -91,7 +91,6 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Categoria_controller();
-        categoriaActual = new Categoria();
         filtrado = controlador.Obtener();
         this.llenarJTable(filtrado);
         this.changeText();
@@ -114,7 +113,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBusqueda = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -198,7 +197,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtBusqueda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
 
@@ -213,7 +212,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -226,7 +225,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -271,7 +270,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-         int fila = jtCategorias.getSelectedRow();
+        int fila = jtCategorias.getSelectedRow();
         if(fila > -1){            
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Categorias",
                     JOptionPane.YES_NO_OPTION);
@@ -286,6 +285,11 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
                     llenarJTable(filtrado); 
                 }
             }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                                "Selecciona la categoria primero",
+                                "Sistema de Compras y Ventas - Categorias de Productos",
+                                JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -312,6 +316,11 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
                 llenarJTable(filtrado);
                 frm.dispose();
             }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                                "Selecciona la categoria primero",
+                                "Sistema de Compras y Ventas - Categoria de Productos",
+                                JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -371,7 +380,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable jtCategorias;
+    private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
 }

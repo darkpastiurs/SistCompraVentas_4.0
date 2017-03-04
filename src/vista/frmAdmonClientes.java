@@ -22,12 +22,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public final class frmAdmonClientes extends javax.swing.JDialog {
 
-    //public Cliente clienteActual = new Cliente();
+    public Cliente clienteActual = new Cliente();
     private Cliente_controller controlador;
     private List<Cliente> filtrado = new ArrayList<>();
     private long numTotal;
     
-    void llenarJTable(List<Cliente> listaDatos){
+    private void llenarJTable(List<Cliente> listaDatos){
         numTotal = 0;
         reiniciarJTable(jtClientes);
         String[] columnas = {"DUI", "NIT", "Nombre", "Apellido", "Telefono" };
@@ -50,12 +50,12 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         lblResultados.setText("Cantidad de registros en total: " + jtClientes.getRowCount());
     }
     
-    public static void reiniciarJTable(JTable jTable){
+    private static void reiniciarJTable(JTable jTable){
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         while(modelo.getRowCount()>0)modelo.removeRow(0);       
     }
     
-    public void buscarTXT(){
+    private void buscarTXT(){
         List<Cliente> encontrado = new ArrayList<>();
         switch (cboFiltro.getSelectedItem().toString()) {
             case "Nombre":
@@ -86,7 +86,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         lblResultados.setText("Clientes encontrados " + encontrado.size() + " de " + numTotal);
     }
     
-    public void changeText(){
+    private void changeText(){
         txtBusqueda.getDocument().addDocumentListener(new DocumentListener(){
             @Override
             public void insertUpdate(DocumentEvent de) {
@@ -105,7 +105,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         });
     }
     
-    int get(String dui){
+    private int obtenerClienteIndex(String dui){
         for(int i = 0; i < filtrado.size(); i++){
             if(filtrado.get(i).getDUI().equals(dui)){
                 return i;
@@ -391,7 +391,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Clientes",
                     JOptionPane.YES_NO_OPTION);
             if(respuesta == JOptionPane.YES_OPTION){
-                if(controlador.Borrar(filtrado.get(get(jtClientes.getValueAt(fila, 0).toString())))){
+                if(controlador.Borrar(filtrado.get(obtenerClienteIndex(jtClientes.getValueAt(fila, 0).toString())))){
                     JOptionPane.showMessageDialog(this,
                                 "El registro ha sido eliminado exitosamente",
                                 "Sistema de Compras y Ventas - Clientes",
@@ -412,8 +412,8 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         // TODO add your handling code here:
         int fila = jtClientes.getSelectedRow();
         if(fila > -1){
-            Cliente clientActual = filtrado.get(get(jtClientes.getValueAt(fila, 0).toString()));
-            frmClientes frm = new frmClientes(this, true, clientActual);
+            clienteActual = filtrado.get(obtenerClienteIndex(jtClientes.getValueAt(fila, 0).toString()));
+            frmClientes frm = new frmClientes(this, true, clienteActual);
             frm.setVisible(true);
             if(!frm.isVisible()){
                 filtrado = controlador.Obtener();
