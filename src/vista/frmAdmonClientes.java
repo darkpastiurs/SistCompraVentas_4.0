@@ -23,12 +23,12 @@ import javax.swing.table.DefaultTableModel;
 public final class frmAdmonClientes extends javax.swing.JDialog {
 
     //public Cliente clienteActual = new Cliente();
-    Cliente_controller controlador;
-    List<Cliente> filtrado = new ArrayList<>();
+    private Cliente_controller controlador;
+    private List<Cliente> filtrado = new ArrayList<>();
     private long numTotal;
     
     void llenarJTable(List<Cliente> listaDatos){
-        
+        numTotal = 0;
         reiniciarJTable(jtClientes);
         String[] columnas = {"DUI", "NIT", "Nombre", "Apellido", "Telefono" };
         DefaultTableModel modelo = new DefaultTableModelImpl();
@@ -43,6 +43,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                         dato.getTelefono()
                 };
                 modelo.addRow(nuevaFila);
+                numTotal += 1;
             }           
         });
         jtClientes.setModel(modelo);
@@ -126,7 +127,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         llenarJTable(filtrado);
         changeText();
         this.setLocationRelativeTo(null);
-        numTotal = jtClientes.getRowCount();
+        //numTotal = jtClientes.getRowCount();
     }
     
     public frmAdmonClientes(javax.swing.JDialog parent, boolean modal) {
@@ -137,7 +138,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         llenarJTable(filtrado);
         changeText();
         this.setLocationRelativeTo(null);        
-        numTotal = jtClientes.getRowCount();
+        //numTotal = jtClientes.getRowCount();
     }
 
     /**
@@ -371,13 +372,12 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         frmClientes frm = new frmClientes(this, true);
-        frm.editar = false;
         frm.setVisible(true);
         if(!frm.isVisible()){
             filtrado = controlador.Obtener();
             llenarJTable(filtrado);
             frm.dispose();
-        }
+        }      
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -399,27 +399,33 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                     filtrado = controlador.Obtener();
                     llenarJTable(filtrado);
                 }
-            }
-            
-        }
+            }            
+        } else {
+            JOptionPane.showMessageDialog(this,
+                                "Selecciona al cliente primero",
+                                "Sistema de Compras y Ventas - Clientes",
+                                JOptionPane.WARNING_MESSAGE);
+        } 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
         int fila = jtClientes.getSelectedRow();
         if(fila > -1){
-            Cliente clientActual = filtrado.get(fila);
+            Cliente clientActual = filtrado.get(get(jtClientes.getValueAt(fila, 0).toString()));
             frmClientes frm = new frmClientes(this, true, clientActual);
-            frm.editar = true;
-            frm.clienteActual = clientActual;
             frm.setVisible(true);
             if(!frm.isVisible()){
                 filtrado = controlador.Obtener();
                 llenarJTable(filtrado);
                 frm.dispose();
             }
-        }
-       
+        } else {
+            JOptionPane.showMessageDialog(this,
+                                "Selecciona al cliente primero",
+                                "Sistema de Compras y Ventas - Clientes",
+                                JOptionPane.WARNING_MESSAGE);
+        }        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void jtClientesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtClientesMouseExited

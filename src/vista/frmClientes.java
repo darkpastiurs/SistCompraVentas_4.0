@@ -17,11 +17,10 @@ import javax.swing.JOptionPane;
  */
 public class frmClientes extends javax.swing.JDialog {
 
-    Validaciones validar = new Validaciones();
-    JButton[] arrayBotones;
-    boolean editar = false;
-    Cliente_controller controlador;
-    public Cliente clienteActual = new Cliente();
+    private Validaciones validar = new Validaciones();
+    private boolean editar = false;
+    private Cliente_controller controlador;
+    private Cliente clienteActual = new Cliente();
     private long idCliente = 0;
   
     public void iniciarIngreso(){    
@@ -78,6 +77,7 @@ public class frmClientes extends javax.swing.JDialog {
         validar.validarSoloLetras(txtNombre);
         validar.validarSoloLetras(txtApellidos);        
         if(clienteActual.getDUI() != null){
+            editar = true;
                 idCliente = clienteActual.getId();
                 txtNombre.setText(clienteActual.getNombre());
                 txtApellidos.setText((clienteActual.getApellidoPaterno() + " " + clienteActual.getApellidoMaterno()).trim());
