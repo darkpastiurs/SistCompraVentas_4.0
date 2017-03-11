@@ -733,7 +733,7 @@ public final class frmCompra extends javax.swing.JDialog {
 
     private void btnBuscarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProvActionPerformed
         // TODO add your handling code here:
-        frmAdmonProveedores frm = new frmAdmonProveedores(this, true);
+        frmAdmonProveedores frm = new frmAdmonProveedores(this, true, true);
         frm.setVisible(true);
         if(frm.isVisible() == false){
             if(frm.proveedorActual.getId() != 0){

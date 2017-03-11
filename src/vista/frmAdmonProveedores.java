@@ -105,18 +105,20 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         return -1;
     }
     
-    public frmAdmonProveedores(java.awt.Frame parent, boolean modal) {
+    public frmAdmonProveedores(java.awt.Frame parent, boolean modal, boolean btnSel) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
         filtrado = controlador.Obtener();
+        btnSeleccionar.setEnabled(btnSel);
         changeText();
         llenarJTable(filtrado);
     }
-    public frmAdmonProveedores(javax.swing.JDialog parent, boolean modal) {
+    public frmAdmonProveedores(javax.swing.JDialog parent, boolean modal, boolean btnSel) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        btnSeleccionar.setEnabled(btnSel);
         filtrado = controlador.Obtener();
         changeText();
         llenarJTable(filtrado);
@@ -138,7 +140,7 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         cboFiltro = new javax.swing.JComboBox<>();
         txtBusqueda = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
@@ -183,7 +185,12 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
 
         txtBusqueda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpBusquedaLayout = new javax.swing.GroupLayout(jpBusqueda);
         jpBusqueda.setLayout(jpBusquedaLayout);
@@ -197,7 +204,7 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtBusqueda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
         jpBusquedaLayout.setVerticalGroup(
@@ -209,7 +216,7 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
                         .addComponent(jLabel1)
                         .addComponent(cboFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -362,6 +369,15 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        int fila = jtProveedores.getSelectedRow();
+        if(fila > -1){            
+            proveedorActual = filtrado.get(obtenerProveedorIndex(jtProveedores.getValueAt(fila, 1).toString()));
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -393,7 +409,7 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmAdmonProveedores dialog = new frmAdmonProveedores(new javax.swing.JFrame(), true);
+                frmAdmonProveedores dialog = new frmAdmonProveedores(new javax.swing.JFrame(), true, false);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -420,8 +436,8 @@ public class frmAdmonProveedores extends javax.swing.JDialog {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox<String> cboFiltro;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

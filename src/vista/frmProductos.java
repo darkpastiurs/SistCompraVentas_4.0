@@ -31,11 +31,6 @@ public class frmProductos extends javax.swing.JDialog {
     public void iniciarIngreso(){    
         validar.estadosBotones(2, arrayBotones);
         validar.habilitarComponentes(this.getComponents());
-       // validar.habilitarComponentes(dcFechaIngreso);
-//        marcaActual = new Marca();
-//        categoriaActual = new Categoria();
-        btnAñadirMarca.setEnabled(true);
-        btnAñadirCategoria.setEnabled(true);
         btnBuscarMarca.setEnabled(true);
         btnBuscarCategoria.setEnabled(true);
         txtMarca.setEnabled(false);
@@ -49,8 +44,6 @@ public class frmProductos extends javax.swing.JDialog {
         validar.estadosBotones(1, arrayBotones);
         marcaActual = new Marca();
         categoriaActual = new Categoria();
-        btnAñadirMarca.setEnabled(false);
-        btnAñadirCategoria.setEnabled(false);
         btnBuscarMarca.setEnabled(false);
         btnBuscarCategoria.setEnabled(false);
         editar = false;
@@ -95,9 +88,7 @@ public class frmProductos extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         dcFechaIngreso = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
-        btnAñadirMarca = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        btnAñadirCategoria = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         txtMarca = new javax.swing.JTextField();
         txtCategoria = new javax.swing.JTextField();
@@ -139,21 +130,7 @@ public class frmProductos extends javax.swing.JDialog {
 
         jLabel5.setText("Marca:");
 
-        btnAñadirMarca.setText("Añadir");
-        btnAñadirMarca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirMarcaActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("Categoria:");
-
-        btnAñadirCategoria.setText("Añadir");
-        btnAñadirCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirCategoriaActionPerformed(evt);
-            }
-        });
 
         jLabel7.setText("Descripcion:");
         jLabel7.setToolTipText("");
@@ -206,17 +183,11 @@ public class frmProductos extends javax.swing.JDialog {
                                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
                                     .addComponent(txtMarca))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(18, 18, 18)
                                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jpDatosLayout.createSequentialGroup()
-                                        .addComponent(btnAñadirMarca)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnBuscarMarca))
-                                    .addGroup(jpDatosLayout.createSequentialGroup()
-                                        .addComponent(btnAñadirCategoria)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnBuscarCategoria)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addComponent(btnBuscarMarca)
+                                    .addComponent(btnBuscarCategoria))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jpDatosLayout.createSequentialGroup()
                                 .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -250,14 +221,12 @@ public class frmProductos extends javax.swing.JDialog {
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAñadirMarca)
                     .addComponent(jLabel5)
                     .addComponent(txtMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarMarca))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(btnAñadirCategoria)
                     .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarCategoria))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -529,24 +498,6 @@ public class frmProductos extends javax.swing.JDialog {
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnAñadirMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirMarcaActionPerformed
-        // TODO add your handling code here:
-        frmMarca marcasFrm = new frmMarca(this, true);
-        marcasFrm.setVisible(true);
-        if(marcasFrm.isVisible() == false){
-            marcasFrm.dispose();
-        }
-    }//GEN-LAST:event_btnAñadirMarcaActionPerformed
-
-    private void btnAñadirCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirCategoriaActionPerformed
-        // TODO add your handling code here:
-        frmCategoria categoriaFrm = new frmCategoria(this, true);
-        categoriaFrm.setVisible(true);
-        if(categoriaFrm.isVisible() == false){
-            categoriaFrm.dispose();
-        }
-    }//GEN-LAST:event_btnAñadirCategoriaActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -590,8 +541,6 @@ public class frmProductos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAñadirCategoria;
-    private javax.swing.JButton btnAñadirMarca;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscarCategoria;
     private javax.swing.JButton btnBuscarMarca;

@@ -87,11 +87,12 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         return -1;
     }
     
-    public frmAdmonCategoria() {
+    public frmAdmonCategoria(boolean btnSel) {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Categoria_controller();
         filtrado = controlador.Obtener();
+        btnSeleccionar.setEnabled(btnSel);
         this.llenarJTable(filtrado);
         this.changeText();
     }
@@ -114,11 +115,11 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         txtBusqueda = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jtCategorias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -199,7 +200,12 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
 
         txtBusqueda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Buscar:");
@@ -214,7 +220,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -226,7 +232,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -324,6 +330,15 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        int fila = jtCategorias.getSelectedRow();
+        if(fila > -1){
+            categoriaActual = filtrado.get(obtenerCategoriaIndex(jtCategorias.getValueAt(fila, 0).toString()));
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -354,7 +369,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmAdmonCategoria().setVisible(true);
+                new frmAdmonCategoria(false).setVisible(true);
             }
         });
     }
@@ -373,7 +388,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

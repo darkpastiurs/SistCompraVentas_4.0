@@ -24,7 +24,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
 
     Marca marcaActual = new Marca();
     private List<Marca> filtrado = new ArrayList<>();
-    private Marca_controller controlador;
+    private Marca_controller controlador = new Marca_controller();
      public static void reiniciarJTable(JTable jTable){
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         while(modelo.getRowCount()>0)modelo.removeRow(0);       
@@ -86,21 +86,24 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
      * Creates new form frmBuscarMarca
      * @param parent
      * @param modal
+     * @param btnSel
      */
-    public frmAdmonMarcas(java.awt.Frame parent, boolean modal) {
+    public frmAdmonMarcas(java.awt.Frame parent, boolean modal, boolean btnSel) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
         filtrado = controlador.Obtener();
+        btnSeleccionar.setEnabled(btnSel);
         llenarJTable(filtrado);
     }
     
-    public frmAdmonMarcas(javax.swing.JDialog parent, boolean modal) {
+    public frmAdmonMarcas(javax.swing.JDialog parent, boolean modal, boolean btnSel) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Marca_controller();
-        filtrado = controlador.Obtener(); 
+        filtrado = controlador.Obtener();
+        btnSeleccionar.setEnabled(btnSel); 
         llenarJTable(filtrado);
     }
 
@@ -116,7 +119,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
         jpBusqueda = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         jpDatos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtMarcas = new javax.swing.JTable();
@@ -126,7 +129,6 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
         btnEditar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar Marca - Sistema de Compra y Venta");
 
         jpBusqueda.setBackground(new java.awt.Color(0, 102, 102));
@@ -136,7 +138,12 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
 
         txtBusqueda.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpBusquedaLayout = new javax.swing.GroupLayout(jpBusqueda);
         jpBusqueda.setLayout(jpBusquedaLayout);
@@ -148,7 +155,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtBusqueda)
                 .addGap(29, 29, 29)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
         jpBusquedaLayout.setVerticalGroup(
@@ -159,7 +166,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
                     .addGroup(jpBusquedaLayout.createSequentialGroup()
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jpBusquedaLayout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -333,6 +340,14 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        int fila = jtMarcas.getSelectedRow();
+        if(fila > -1){
+            marcaActual = filtrado.get(obtenerMarcaIndex(jtMarcas.getValueAt(fila, 0).toString()));
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -366,7 +381,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmAdmonMarcas dialog = new frmAdmonMarcas(new javax.swing.JFrame(), true);
+                frmAdmonMarcas dialog = new frmAdmonMarcas(new javax.swing.JFrame(), true, false);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -393,7 +408,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;

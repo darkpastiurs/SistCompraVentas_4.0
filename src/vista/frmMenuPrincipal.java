@@ -414,7 +414,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
     private void jmiClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiClienteActionPerformed
         // TODO add your handling code here:
-        frmClientes clienteFrm = new frmClientes(this, true);
+        frmAdmonClientes clienteFrm = new frmAdmonClientes(this, true, false);
         clienteFrm.setVisible(true);
         if(clienteFrm.isVisible() == false){
             clienteFrm.dispose();
@@ -423,7 +423,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
     private void jmiMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiMarcaActionPerformed
         // TODO add your handling code here:
-        frmMarca marcaFrm = new frmMarca(this, true);
+        frmAdmonMarcas marcaFrm = new frmAdmonMarcas(this, true, false);
         marcaFrm.setVisible(true);
         if(marcaFrm.isVisible() == false){
             marcaFrm.dispose();
@@ -432,7 +432,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
     private void jmiCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCategoriaActionPerformed
         // TODO add your handling code here:
-        frmCategoria categoriaFrm = new frmCategoria(this, true);
+        frmAdmonCategoria categoriaFrm = new frmAdmonCategoria(false);
         categoriaFrm.setVisible(true);
         if(categoriaFrm.isVisible() == false){
             categoriaFrm.dispose();
@@ -450,7 +450,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
 
     private void jmiProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiProveedoresActionPerformed
         // TODO add your handling code here:
-        frmProveedores proveedorFrm = new frmProveedores(this, true);
+        frmAdmonProveedores proveedorFrm = new frmAdmonProveedores(this, true, false);
         proveedorFrm.setVisible(true);
         if(proveedorFrm.isVisible() == false){
             proveedorFrm.dispose();

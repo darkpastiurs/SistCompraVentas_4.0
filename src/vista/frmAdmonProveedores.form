@@ -113,7 +113,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="txtBusqueda" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" pref="48" max="-2" attributes="0"/>
+                  <Component id="btnSeleccionar" min="-2" pref="48" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -128,7 +128,7 @@
                           <Component id="cboFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jButton1" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnSeleccionar" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -168,12 +168,15 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnSeleccionar">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/iconos/search.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

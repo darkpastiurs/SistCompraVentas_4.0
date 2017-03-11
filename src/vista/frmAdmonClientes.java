@@ -119,22 +119,24 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public frmAdmonClientes(java.awt.Frame parent, boolean modal) {
+    public frmAdmonClientes(java.awt.Frame parent, boolean modal, boolean btnSel) {
         super(parent, modal);
         initComponents();
         controlador = new Cliente_controller();
         filtrado = controlador.Obtener();
+        btnSeleccionar.setEnabled(btnSel);
         llenarJTable(filtrado);
         changeText();
         this.setLocationRelativeTo(null);
         //numTotal = jtClientes.getRowCount();
     }
     
-    public frmAdmonClientes(javax.swing.JDialog parent, boolean modal) {
+    public frmAdmonClientes(javax.swing.JDialog parent, boolean modal, boolean btnSel) {
         super(parent, modal);
         initComponents();
         controlador = new Cliente_controller();
         filtrado = controlador.Obtener();
+        btnSeleccionar.setEnabled(btnSel);
         llenarJTable(filtrado);
         changeText();
         this.setLocationRelativeTo(null);        
@@ -159,7 +161,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         txtBusqueda = new javax.swing.JTextField();
         cboFiltro = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnNuevo = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -223,10 +225,10 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
 
         cboFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Apellido", "DUI", "NIT" }));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/search.png"))); // NOI18N
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSeleccionarActionPerformed(evt);
             }
         });
 
@@ -242,7 +244,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpAccionesLayout.setVerticalGroup(
@@ -250,7 +252,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
             .addGroup(jpAccionesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,7 +326,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                 .addComponent(btnNuevo)
                 .addGap(15, 15, 15)
                 .addComponent(btnEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnEditar)
                 .addGap(10, 10, 10))
         );
@@ -380,9 +382,9 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         }      
     }//GEN-LAST:event_btnNuevoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
@@ -464,7 +466,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmAdmonClientes dialog = new frmAdmonClientes(new javax.swing.JFrame(), true);
+                frmAdmonClientes dialog = new frmAdmonClientes(new javax.swing.JFrame(), true, false);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -489,9 +491,9 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox<String> cboFiltro;
     private javax.swing.JCheckBox chkEstado;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
