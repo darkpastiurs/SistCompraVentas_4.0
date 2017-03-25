@@ -19,19 +19,38 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
     Validaciones validar = new Validaciones();
     JButton[] arrayBotones;
     private long idCategoria = 0;
-    boolean editar = false;
     Categoria_controller controlador;
+    private Categoria categoriaActual;
+    
+    private boolean editar = false;
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+
+    public Categoria getCategoriaActual() {
+        return categoriaActual;
+    }
+
+    public void setCategoriaActual(Categoria categoriaActual) {
+        this.categoriaActual = categoriaActual;
+    }
     
     public void iniciarIngreso(){    
-        validar.estadosBotones(2, arrayBotones);
+       // validar.estadosBotones(2, arrayBotones);
         validar.habilitarComponentes(this.getComponents());
     }
     
     private void finalizarIngreso(){        
         validar.limpiarComponentes(this.getComponents());
         validar.deshabilitarComponentes(this.getComponents());
-        validar.estadosBotones(1, arrayBotones);
+        //validar.estadosBotones(1, arrayBotones);
         editar = false;
+        this.setVisible(false);
     }
     
     /**
@@ -45,7 +64,7 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         arrayBotones = new JButton[]{btnGuardar,  btnCancelar};
         controlador = new Categoria_controller();
-        finalizarIngreso();
+        iniciarIngreso();
     }
     
     public frmRegistroCategoria(javax.swing.JDialog parent, boolean modal) {
@@ -54,7 +73,7 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         arrayBotones = new JButton[]{btnGuardar,btnCancelar};
         controlador = new Categoria_controller();
-        finalizarIngreso();
+        iniciarIngreso();
     }
 
     /**
@@ -75,6 +94,11 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Categoria - Sistema de Compra y Venta");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("Nombre de categoria:");
@@ -174,10 +198,9 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
         // TODO add your handling code here:
         boolean validarTexto = validar.validarCamposTexto(txtCategoria);
         if(validarTexto){
-            Categoria categoria = new Categoria();
-            categoria.setNombre(txtCategoria.getText().trim());
-            if(editar == false){ // se va a ingresar uno nuevo
-                if(controlador.Registrar(categoria)){
+            categoriaActual.setNombre(txtCategoria.getText().trim());
+            if(!isEditar()){ // se va a ingresar uno nuevo
+                if(controlador.Registrar(categoriaActual)){
                     JOptionPane.showMessageDialog(this,
                                     "El registro ha sido ingresado exitosamente",
                                     "Sistema de Compras y Ventas - Categorias",
@@ -185,11 +208,10 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
                             finalizarIngreso();
                 }
             } else {
-                categoria.setId(idCategoria);
                 int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de editar estos datos?", "Sistema de Compra y Venta - Categorias",
                     JOptionPane.YES_NO_OPTION);
                 if(respuesta == JOptionPane.YES_OPTION){
-                    if(controlador.Editar(categoria)){
+                    if(controlador.Editar(categoriaActual)){
                         JOptionPane.showMessageDialog(this,
                                     "El registro ha sido editado exitosamente",
                                     "Sistema de Compras y Ventas - Categorias",
@@ -205,6 +227,16 @@ public class frmRegistroCategoria extends javax.swing.JDialog {
         // TODO add your handling code here:
         finalizarIngreso();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        if(isEditar()){
+            idCategoria = categoriaActual.getId();
+            txtCategoria.setText(categoriaActual.getNombre());
+        } else {
+            categoriaActual = new Categoria();
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

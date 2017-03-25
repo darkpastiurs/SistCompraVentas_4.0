@@ -42,7 +42,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         modelo.setColumnIdentifiers(columnas);
         lista.stream().forEach(dato -> {
             Object[] nuevaFila = {
-                dato.getNombre()
+                dato
             };
             if(dato.isEstado()){
                 modelo.addRow(nuevaFila);
@@ -76,15 +76,6 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
             }
         
         });
-    }
-    
-    private int obtenerCategoriaIndex(String categoriaStr){
-        for(int i = 0; i < filtrado.size(); i++){
-            if(filtrado.get(i).getNombre().equals(categoriaStr)){
-                return i;
-            }
-        }
-        return -1;
     }
     
     public frmAdmonCategoria(boolean btnSel) {
@@ -281,7 +272,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Categorias",
                     JOptionPane.YES_NO_OPTION);
             if(respuesta == JOptionPane.YES_OPTION){                
-                categoriaActual = filtrado.get(obtenerCategoriaIndex(jtCategorias.getValueAt(fila, 0).toString()));
+                categoriaActual = filtrado.get(filtrado.indexOf(jtCategorias.getValueAt(fila, 0)));
                 if(controlador.Borrar(categoriaActual)){
                     JOptionPane.showMessageDialog(this,
                                 "El registro ha sido eliminado exitosamente",
@@ -301,7 +292,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        frmCategoria frm = new frmCategoria(this, true);
+        frmRegistroCategoria frm = new frmRegistroCategoria(this, true);
         frm.setVisible(true);
         if(!frm.isVisible()){
             filtrado = controlador.Obtener();
@@ -314,14 +305,17 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         // TODO add your handling code here:
         int fila = jtCategorias.getSelectedRow();
         if(fila > -1){
-            categoriaActual = filtrado.get(obtenerCategoriaIndex(jtCategorias.getValueAt(fila, 0).toString()));
-            frmCategoria frm = new frmCategoria(this, true, categoriaActual);
-            frm.setVisible(true);
-            if(!frm.isVisible()){
-                filtrado = controlador.Obtener();
-                llenarJTable(filtrado);
-                frm.dispose();
-            }
+            frmRegistroCategoria frm = new frmRegistroCategoria(this, true);
+            if(jtCategorias.getValueAt(fila, 0) instanceof Categoria){
+                frm.setCategoriaActual(filtrado.get(filtrado.indexOf(jtCategorias.getValueAt(fila, 0))));
+                frm.setEditar(true);
+                frm.setVisible(true);
+                if (!frm.isVisible()) {
+                    filtrado = controlador.Obtener();
+                    llenarJTable(filtrado);
+                    frm.dispose();
+                }
+            } 
         } else {
             JOptionPane.showMessageDialog(this,
                                 "Selecciona la categoria primero",
@@ -334,7 +328,7 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
         // TODO add your handling code here:
         int fila = jtCategorias.getSelectedRow();
         if(fila > -1){
-            categoriaActual = filtrado.get(obtenerCategoriaIndex(jtCategorias.getValueAt(fila, 0).toString()));
+            categoriaActual = filtrado.get(filtrado.indexOf(jtCategorias.getValueAt(fila, 0)));
             this.setVisible(false);
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed

@@ -439,7 +439,7 @@ public class frmProductos extends javax.swing.JDialog {
 
     private void btnBuscarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarCategoriaActionPerformed
         // TODO add your handling code here:
-        frmBuscarCategoria frmBuscar = new frmBuscarCategoria (this, true);
+        frmAdmonCategoria frmBuscar = new frmAdmonCategoria (true);
         frmBuscar.setVisible(true);
         if(frmBuscar.isVisible() == false){
             if(frmBuscar.categoriaActual.toString() != null){
