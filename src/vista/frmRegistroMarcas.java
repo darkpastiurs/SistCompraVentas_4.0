@@ -7,7 +7,6 @@ package vista;
 
 import controlador.Marca_controller;
 import entidades.Marca;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,21 +15,18 @@ import javax.swing.JOptionPane;
  */
 public class frmRegistroMarcas extends javax.swing.JDialog {
 
-    Marca_controller controlador;
-    Validaciones validar = new Validaciones();
-    JButton[] arrayBotones;
-    private long idMarca = 0;
-    boolean editar = false;
-    
-    public void iniciarIngreso(){    
-        validar.estadosBotones(2, arrayBotones);
+    private Marca_controller controlador;
+    private Validaciones validar = new Validaciones();
+    private Marca marca;
+    private boolean editar = false;
+
+    public void iniciarIngreso() {
         validar.habilitarComponentes(this.getComponents());
     }
-    
-    private void finalizarIngreso(){        
+
+    private void finalizarIngreso() {
         validar.limpiarComponentes(this.getComponents());
         validar.deshabilitarComponentes(this.getComponents());
-        validar.estadosBotones(1, arrayBotones);
         editar = false;
     }
     
@@ -39,13 +35,12 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public frmRegistroMarcas(java.awt.Frame parent, boolean modal) {
+   public frmRegistroMarcas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Marca_controller();
-        arrayBotones = new JButton[]{btnGuardar, btnCancelar};
-        finalizarIngreso();
+        iniciarIngreso();
     }
     
     public frmRegistroMarcas(javax.swing.JDialog parent, boolean modal) {
@@ -53,8 +48,7 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = new Marca_controller();
-        arrayBotones = new JButton[]{btnGuardar, btnCancelar};
-        finalizarIngreso();
+        iniciarIngreso();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,6 +68,11 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Marca - Sistema de Compra y Venta");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Nombre de marca:");
@@ -118,6 +117,11 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
         btnCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCancelar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         btnCancelar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpAccionesLayout = new javax.swing.GroupLayout(jpAcciones);
         jpAcciones.setLayout(jpAccionesLayout);
@@ -166,7 +170,6 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
         // TODO add your handling code here:
         boolean validarTexto = validar.validarCamposTexto(txtMarca);
         if(validarTexto){
-            Marca marca = new Marca();
             marca.setNombre(txtMarca.getText().trim());
             if(editar == false){ //Se va a guardar uno nuevo
                 if(controlador.Registrar(marca)){
@@ -177,7 +180,6 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
                     finalizarIngreso();
                 }
             } else{
-                marca.setId(idMarca);
                 int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de editar estos datos?",
                         "Sistema de Compras y Ventas - Marcas", JOptionPane.YES_NO_OPTION);
                 if(respuesta == JOptionPane.YES_OPTION){
@@ -190,8 +192,24 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
                     }
                 }
             }
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        finalizarIngreso();
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        if(isEditar()){
+            txtMarca.setText(marca.getNombre());
+        } else {
+            marca = new Marca();
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -244,4 +262,20 @@ public class frmRegistroMarcas extends javax.swing.JDialog {
     private javax.swing.JPanel jpDatos;
     private javax.swing.JTextField txtMarca;
     // End of variables declaration//GEN-END:variables
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
 }

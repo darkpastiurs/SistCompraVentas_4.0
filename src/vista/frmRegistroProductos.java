@@ -377,8 +377,8 @@ public class frmRegistroProductos extends javax.swing.JDialog {
         frmAdmonMarcas frmBuscar = new frmAdmonMarcas(this, true, true);
         frmBuscar.setVisible(true);
         if(frmBuscar.isVisible() == false){
-            if(frmBuscar.marcaActual.toString() != null){
-                marcaActual = frmBuscar.marcaActual;
+            if(frmBuscar.getMarcaActual().toString() != null){
+                marcaActual = frmBuscar.getMarcaActual();
                 txtMarca.setText(marcaActual.getNombre());
             }
         }
@@ -389,8 +389,8 @@ public class frmRegistroProductos extends javax.swing.JDialog {
         frmAdmonCategoria frmBuscar = new frmAdmonCategoria(true);
         frmBuscar.setVisible(true);
         if(frmBuscar.isVisible() == false){
-            if(frmBuscar.categoriaActual.toString() != null){
-                categoriaActual = frmBuscar.categoriaActual;
+            if(frmBuscar.getCategoriaActual().toString() != null){
+                categoriaActual = frmBuscar.getCategoriaActual();
                 txtCategoria.setText(categoriaActual.getNombre());
             }
         }

@@ -12,13 +12,13 @@ import java.sql.Date;
  * @author darkpastiursSennin
  */
 public class Producto {
-    long _id;
-    String _nombre;
-    Date _fechaRegistro;
-    String _descripcion;
-    Categoria _categoria;
-    Marca _marca;
-    boolean _estado;
+    private long _id;
+    private String _nombre;
+    private Date _fechaRegistro;
+    private String _descripcion;
+    private Categoria _categoria;
+    private Marca _marca;
+    private boolean _estado;
 
     public long getId() {
         return _id;

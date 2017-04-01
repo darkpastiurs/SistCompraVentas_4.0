@@ -442,8 +442,8 @@ public class frmProductos extends javax.swing.JDialog {
         frmAdmonCategoria frmBuscar = new frmAdmonCategoria (true);
         frmBuscar.setVisible(true);
         if(frmBuscar.isVisible() == false){
-            if(frmBuscar.categoriaActual.toString() != null){
-                categoriaActual = frmBuscar.categoriaActual;
+            if(frmBuscar.getCategoriaActual().toString() != null){
+                categoriaActual = frmBuscar.getCategoriaActual();
                 txtCategoria.setText(categoriaActual.getNombre());
             }
         }

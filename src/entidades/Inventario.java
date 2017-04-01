@@ -6,18 +6,17 @@
 package entidades;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 /**
  *
  * @author darkpastiursSennin
  */
 public class Inventario {
-    long _id;
-    BigDecimal _stock;
-    BigDecimal _precio;
-    Producto _producto;
-    boolean _estado;
+    private long _id;
+    private BigDecimal _stock;
+    private BigDecimal _precio;
+    private Producto _producto;
+    private boolean _estado;
 
     public long getId() {
         return _id;
@@ -68,6 +67,6 @@ public class Inventario {
 
     @Override
     public String toString() {
-        return this._producto._nombre;
+        return this._producto.getNombre();
     }
 }

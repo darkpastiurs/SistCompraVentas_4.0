@@ -26,9 +26,17 @@ public class frmAdmonCategoria extends javax.swing.JFrame {
      * Creates new form frmAdmonCategoria
      */
     
-    public Categoria categoriaActual = new Categoria();
+    private Categoria categoriaActual = new Categoria();
     private final Categoria_controller controlador;
     private List<Categoria> filtrado = new ArrayList<>();
+
+    public Categoria getCategoriaActual() {
+        return categoriaActual;
+    }
+
+    public void setCategoriaActual(Categoria categoriaActual) {
+        this.categoriaActual = categoriaActual;
+    }
     
     public static void reiniciarJTable(JTable jTable){
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();

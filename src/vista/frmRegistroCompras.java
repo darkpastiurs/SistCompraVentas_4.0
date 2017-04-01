@@ -85,7 +85,6 @@ public final class frmRegistroCompras extends javax.swing.JDialog {
             boolean encontrado = false;
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 Inventario comparador = (Inventario) (modelo.getValueAt(i, 0));
-                System.out.println(comparador + " = " + inventarioActual);
                 if(comparador.getId() == inventarioActual.getId()){
                     encontrado = true;
                     break;

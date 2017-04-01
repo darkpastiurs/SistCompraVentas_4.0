@@ -30,7 +30,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
     private void llenarJTable(List<Cliente> listaDatos){
         numTotal = 0;
         reiniciarJTable(jtClientes);
-        String[] columnas = {"DUI", "NIT", "Nombre", "Apellido", "Telefono" };
+        String[] columnas = {"DUI", "NIT", "Nombre", "Telefono" };
         DefaultTableModel modelo = new DefaultTableModelImpl();
         modelo.setColumnIdentifiers(columnas);
         listaDatos.stream().forEach((dato) -> {
@@ -38,8 +38,7 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
                 Object[] nuevaFila = {
                         dato.getDUI(),
                         dato.getNIT(),
-                        dato.getNombre(), 
-                        (dato.getApellidoPaterno() + " " + dato.getApellidoMaterno()).trim(),
+                        dato,
                         dato.getTelefono()
                 };
                 modelo.addRow(nuevaFila);
@@ -105,14 +104,6 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         });
     }
     
-    private int obtenerClienteIndex(String dui){
-        for(int i = 0; i < filtrado.size(); i++){
-            if(filtrado.get(i).getDUI().equals(dui)){
-                return i;
-            }
-        }
-        return -1;
-    }
     
     /**
      * Creates new form frmBuscarClientes
@@ -393,14 +384,17 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Clientes",
                     JOptionPane.YES_NO_OPTION);
             if(respuesta == JOptionPane.YES_OPTION){
-                if(controlador.Borrar(filtrado.get(obtenerClienteIndex(jtClientes.getValueAt(fila, 0).toString())))){
-                    JOptionPane.showMessageDialog(this,
+                if(jtClientes.getValueAt(fila, 2) instanceof Cliente){
+                    if (controlador.Borrar(filtrado.get(filtrado.indexOf(jtClientes.getValueAt(fila, 2))))) {
+                        JOptionPane.showMessageDialog(this,
                                 "El registro ha sido eliminado exitosamente",
                                 "Sistema de Compras y Ventas - Clientes",
                                 JOptionPane.INFORMATION_MESSAGE);
-                    filtrado = controlador.Obtener();
-                    llenarJTable(filtrado);
+                        filtrado = controlador.Obtener();
+                        llenarJTable(filtrado);
+                    }
                 }
+                
             }            
         } else {
             JOptionPane.showMessageDialog(this,
@@ -414,14 +408,19 @@ public final class frmAdmonClientes extends javax.swing.JDialog {
         // TODO add your handling code here:
         int fila = jtClientes.getSelectedRow();
         if(fila > -1){
-            clienteActual = filtrado.get(obtenerClienteIndex(jtClientes.getValueAt(fila, 0).toString()));
-            frmClientes frm = new frmClientes(this, true, clienteActual);
-            frm.setVisible(true);
-            if(!frm.isVisible()){
-                filtrado = controlador.Obtener();
-                llenarJTable(filtrado);
-                frm.dispose();
+            if(jtClientes.getValueAt(fila, 2) instanceof Cliente){
+                clienteActual = filtrado.get(filtrado.indexOf(jtClientes.getValueAt(fila, 2)));
+                frmClientes frm = new frmClientes(this, true);
+                frm.setEditar(true);
+                frm.setCliente(clienteActual);
+                frm.setVisible(true);
+                if (!frm.isVisible()) {
+                    filtrado = controlador.Obtener();
+                    llenarJTable(filtrado);
+                    frm.dispose();
+                }
             }
+           
         } else {
             JOptionPane.showMessageDialog(this,
                                 "Selecciona al cliente primero",

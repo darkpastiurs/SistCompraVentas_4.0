@@ -7,7 +7,6 @@ package vista;
 
 import controlador.Marca_controller;
 import entidades.Marca;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**

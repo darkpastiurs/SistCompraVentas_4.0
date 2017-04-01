@@ -8,7 +8,6 @@ package vista;
 import controlador.Cliente_controller;
 import entidades.Cliente;
 import java.util.Date;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,7 +19,7 @@ public class frmClientes extends javax.swing.JDialog {
     private Validaciones validar = new Validaciones();
     private boolean editar = false;
     private Cliente_controller controlador;
-    private long idCliente = 0;
+    private Cliente cliente;
   
     public void iniciarIngreso(){    
         validar.habilitarComponentes(this.getComponents());
@@ -62,32 +61,6 @@ public class frmClientes extends javax.swing.JDialog {
         validar.validarSoloLetras(txtNombre);
         validar.validarSoloLetras(txtApellidos);
         iniciarIngreso();
-        this.setLocationRelativeTo(null);
-    }
-    
-    public frmClientes(javax.swing.JDialog parent, boolean modal, Cliente data) {
-        super(parent, modal);
-        initComponents(); 
-        controlador = new Cliente_controller();
-        validar.duiFormato(ftxtDUI, this);
-        validar.nitFormato(ftxtNIT, this);
-        validar.telefonoFormato(ftxtTelefono, this);
-        validar.validarSoloLetras(txtNombre);
-        validar.validarSoloLetras(txtApellidos);        
-        if(data.getDUI() != null){
-            editar = true;
-                idCliente = data.getId();
-                txtNombre.setText(data.getNombre());
-                txtApellidos.setText((data.getApellidoPaterno() + " " + data.getApellidoMaterno()).trim());
-                validar.SelectedItem(cboGenero, data.getGenero());
-                dcFechaNacimiento.setDate(new Date(data.getFechaNacimiento().getTime()));
-                ftxtDUI.setText(data.getDUI());
-                ftxtNIT.setText(data.getNIT());
-                ftxtTelefono.setText(data.getTelefono());
-                txtEmail.setText(data.getEmail());
-                txtDireccion.setText(data.getDireccion());
-                iniciarIngreso();
-        }
         this.setLocationRelativeTo(null);
     }
 
@@ -138,6 +111,11 @@ public class frmClientes extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Clientes - Sistema de Compra y Venta");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Nombres: ");
 
@@ -385,7 +363,6 @@ public class frmClientes extends javax.swing.JDialog {
                 && validar.validarCamposTexto(txtDireccion));
         boolean validarFecha = validar.validarFechas(dcFechaNacimiento);
         if(validarTextos && validarFecha){
-            Cliente cliente = new Cliente();
             cliente.setNombre(txtNombre.getText().trim());
             String[] partirApellidos = validar.editarApellidos(txtApellidos.getText().trim());
             if (partirApellidos != null) {
@@ -396,7 +373,6 @@ public class frmClientes extends javax.swing.JDialog {
             } else {
                 cliente.setApellidoPaterno(txtApellidos.getText().trim());
             }
-            
             cliente.setDUI(ftxtDUI.getText());
             cliente.setNIT(ftxtNIT.getText());
             cliente.setFechaNacimiento(dcFechaNacimiento.getDate());
@@ -417,7 +393,6 @@ public class frmClientes extends javax.swing.JDialog {
                             finalizarIngreso();
                 }
             } else {
-                cliente.setId(idCliente);
                 int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de editar estos datos?", "Sistema de Compra y Venta - Clientes",
                     JOptionPane.YES_NO_OPTION);
                 if(respuesta == JOptionPane.YES_OPTION){
@@ -433,6 +408,24 @@ public class frmClientes extends javax.swing.JDialog {
             this.setVisible(false);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        if (isEditar()) {
+            txtNombre.setText(cliente.getNombre());
+            txtApellidos.setText((cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno()).trim());
+            validar.SelectedItem(cboGenero, cliente.getGenero());
+            dcFechaNacimiento.setDate(new Date(cliente.getFechaNacimiento().getTime()));
+            ftxtDUI.setText(cliente.getDUI());
+            ftxtNIT.setText(cliente.getNIT());
+            ftxtTelefono.setText(cliente.getTelefono());
+            txtEmail.setText(cliente.getEmail());
+            txtDireccion.setText(cliente.getDireccion());
+            iniciarIngreso();
+        } else {
+            cliente = new Cliente();
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -509,4 +502,20 @@ public class frmClientes extends javax.swing.JDialog {
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }

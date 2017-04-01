@@ -22,10 +22,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class frmAdmonMarcas extends javax.swing.JDialog {
 
-    Marca marcaActual = new Marca();
+    private Marca marcaActual = new Marca();
     private List<Marca> filtrado = new ArrayList<>();
     private Marca_controller controlador = new Marca_controller();
-     public static void reiniciarJTable(JTable jTable){
+
+    public Marca getMarcaActual() {
+        return marcaActual;
+    }
+
+    public void setMarcaActual(Marca marcaActual) {
+        this.marcaActual = marcaActual;
+    }
+    
+    public static void reiniciarJTable(JTable jTable){
         DefaultTableModel modelo = (DefaultTableModel) jTable.getModel();
         while(modelo.getRowCount()>0)modelo.removeRow(0);       
     }
@@ -37,7 +46,7 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
         modelo.setColumnIdentifiers(columnas);
         lista.stream().forEach(dato->{
             Object[] nuevaFila = {
-                dato.getNombre()
+                dato
             };
             if(dato.isEstado()){
                 modelo.addRow(nuevaFila);
@@ -299,13 +308,17 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
         // TODO add your handling code here:
         int fila = jtMarcas.getSelectedRow();
         if(fila > -1){
-            marcaActual = filtrado.get(obtenerMarcaIndex(jtMarcas.getValueAt(fila, 0).toString()));
-            frmMarca frm = new frmMarca(this, true, marcaActual);
-            frm.setVisible(true);
-            if(!frm.isVisible()){
-                filtrado = controlador.Obtener();
-                llenarJTable(filtrado);
-                frm.dispose();
+            if(jtMarcas.getValueAt(fila, 0) instanceof Marca){
+                marcaActual = filtrado.get(filtrado.indexOf(jtMarcas.getValueAt(fila, 0)));
+                frmRegistroMarcas frm = new frmRegistroMarcas(this, true);
+                frm.setMarca(marcaActual);
+                frm.setEditar(true);
+                frm.setVisible(true);
+                if (!frm.isVisible()) {
+                    filtrado = controlador.Obtener();
+                    llenarJTable(filtrado);
+                    frm.dispose();
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this,
@@ -322,14 +335,16 @@ public class frmAdmonMarcas extends javax.swing.JDialog {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Estas seguro de eliminar estos datos?", "Sistema de Compra y Venta - Marcas",
                     JOptionPane.YES_NO_OPTION);
             if(respuesta == JOptionPane.YES_OPTION){
-                marcaActual = filtrado.get(obtenerMarcaIndex(jtMarcas.getValueAt(fila, 0).toString()));
-                if(controlador.Quitar(marcaActual)){
-                    JOptionPane.showMessageDialog(this,
+                if(jtMarcas.getValueAt(fila, 0) instanceof Marca){
+                    marcaActual = filtrado.get(filtrado.indexOf(jtMarcas.getValueAt(fila, 0)));
+                    if (controlador.Quitar(marcaActual)) {
+                        JOptionPane.showMessageDialog(this,
                                 "El registro ha sido eliminado exitosamente",
                                 "Sistema de Compras y Ventas - Marca",
                                 JOptionPane.INFORMATION_MESSAGE);
-                    filtrado = controlador.Obtener();
-                    llenarJTable(filtrado); 
+                        filtrado = controlador.Obtener();
+                        llenarJTable(filtrado);
+                    }
                 }
             }
         } else {
