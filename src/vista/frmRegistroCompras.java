@@ -37,7 +37,7 @@ public final class frmRegistroCompras extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);            
         jtDetalles.setDefaultRenderer(Object.class, new Renderizador());
-        jtDetalles.setRowHeight(30);
+        jtDetalles.setRowHeight(25);
         Object[] columnas = {"Producto", "Precio Unitario", "Cantidad", "Subtotal", "¿Quitar?"};
         DefaultTableModel modelo = new DefaultTableModelImpl();
         modelo.setColumnIdentifiers(columnas);
